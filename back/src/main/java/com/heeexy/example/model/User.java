@@ -1,6 +1,7 @@
 package com.heeexy.example.model;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 
 /**
@@ -11,11 +12,11 @@ public class User extends BaseEntity {
     private String username;
     private String password;
     private String nickname;
-    private int role_id;
-
-    private Timestamp create_time;
-    private Timestamp update_time;
-    private String delete_status;
+    private int roleId;
+    private Timestamp createTime;
+    private Timestamp updateTime;
+    @Transient
+    private String deleteStatus;
 
 
     public String getUsername() {
@@ -42,35 +43,35 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
-    public Timestamp getCreate_time() {
-        return create_time;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
-    public Timestamp getUpdate_time() {
-        return update_time;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Timestamp update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getDelete_status() {
-        return delete_status;
+    public String getDeleteStatus() {
+        return deleteStatus;
     }
 
-    public void setDelete_status(String delete_status) {
-        this.delete_status = delete_status;
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 }

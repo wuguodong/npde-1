@@ -12,6 +12,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.jws.soap.SOAPBinding;
 
@@ -50,9 +51,11 @@ public class LoginService {
      * 根据用户名和密码查询对应的用户
      */
     public User getUser(String username, String password) {
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setDeleteStatus("1");
         User user1 = loginMapper.selectOne(user);
         return user1;
     }

@@ -1,55 +1,56 @@
 package com.heeexy.example.model;
 
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
  * Created by lh on 2019-3-13.
  */
+@Table(name = "sys_permission")
 public class Permission extends BaseEntity {
-    private String menu_code;
-    private String menu_name;
-    private String permission_code;
-    private String permission_name;
-    private int required_permission;
+    private String menuCode;
+    private String menuName;
+    private String permissionCode;
+    private String permissionName;
+    private int requiredPermission;
 
-
-    public String getMenu_code() {
-        return menu_code;
+    public String getMenuCode() {
+        return menuCode;
     }
 
-    public void setMenu_code(String menu_code) {
-        this.menu_code = menu_code;
+    public void setMenuCode(String menuCode) {
+        this.menuCode = menuCode;
     }
 
-    public String getMenu_name() {
-        return menu_name;
+    public String getMenuName() {
+        return menuName;
     }
 
-    public void setMenu_name(String menu_name) {
-        this.menu_name = menu_name;
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
     }
 
-    public String getPermission_code() {
-        return permission_code;
+    public String getPermissionCode() {
+        return permissionCode;
     }
 
-    public void setPermission_code(String permission_code) {
-        this.permission_code = permission_code;
+    public void setPermissionCode(String permissionCode) {
+        this.permissionCode = permissionCode;
     }
 
-    public String getPermission_name() {
-        return permission_name;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public void setPermission_name(String permission_name) {
-        this.permission_name = permission_name;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
-    public int getRequired_permission() {
-        return required_permission;
+    public int getRequiredPermission() {
+        return requiredPermission;
     }
 
-    public void setRequired_permission(int required_permission) {
-        this.required_permission = required_permission;
+    public void setRequiredPermission(int requiredPermission) {
+        this.requiredPermission = requiredPermission;
     }
 }

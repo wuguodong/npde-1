@@ -7,11 +7,11 @@ import java.sql.Timestamp;
  */
 public class RolePermission extends BaseEntity {
     private String username;
-    private String role_id;
-    private String permission_id;
-    private Timestamp create_time;
-    private Timestamp update_time;
-    private String delete_status;
+    private String roleId;
+    private String permissionId;
+    private Timestamp createTime;
+    private Timestamp updateTime;
+    private String deleteStatus;
 
     public String getUsername() {
         return username;
@@ -21,43 +21,43 @@ public class RolePermission extends BaseEntity {
         this.username = username;
     }
 
-    public String getRole_id() {
-        return role_id;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(String role_id) {
-        this.role_id = role_id;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
-    public String getPermission_id() {
-        return permission_id;
+    public String getPermissionId() {
+        return permissionId;
     }
 
-    public void setPermission_id(String permission_id) {
-        this.permission_id = permission_id;
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId;
     }
 
-    public Timestamp getCreate_time() {
-        return create_time;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
-    public Timestamp getUpdate_time() {
-        return update_time;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Timestamp update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getDelete_status() {
-        return delete_status;
+    public String getDeleteStatus() {
+        return deleteStatus;
     }
 
-    public void setDelete_status(String delete_status) {
-        this.delete_status = delete_status;
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 }

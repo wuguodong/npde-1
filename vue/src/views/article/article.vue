@@ -10,12 +10,12 @@
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
-      <el-table-column align="center" label="序号" width="80">
-        <template slot-scope="scope">
-          <span v-text="getIndex(scope.$index)"> </span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="content" label="文章" style="width: 60px;"></el-table-column>
+      <!--<el-table-column align="center" label="序号" width="80">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span v-text="getIndex(scope.$index)"> </span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column align="center" prop="content" label="文章" style="width: 60px;"></el-table-column>-->
       <el-table-column align="center" label="创建时间" width="170">
         <template slot-scope="scope">
           <span>{{scope.row.createTime}}</span>
@@ -93,17 +93,17 @@
         }).then(data => {
           this.listLoading = false;
           this.list = data.list;
-          this.totalCount = data.totalCount;
+          this.totalCount = data.total;
         })
       },
       handleSizeChange(val) {
         //改变每页数量
-        this.listQuery.pageRow = val
+        this.listQuery.pageRow = val;
         this.handleFilter();
       },
       handleCurrentChange(val) {
         //改变页码
-        this.listQuery.pageNum = val
+        this.listQuery.pageNum = val;
         this.getList();
       },
       getIndex($index) {
@@ -120,7 +120,7 @@
         //显示修改对话框
         this.tempArticle.id = this.list[$index].id;
         this.tempArticle.content = this.list[$index].content;
-        this.dialogStatus = "update"
+        this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
       createArticle() {

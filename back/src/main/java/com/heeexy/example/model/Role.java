@@ -1,45 +1,49 @@
 package com.heeexy.example.model;
 
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
  * Created by lh on 2019-3-13.
  */
+@Table(name = "sys_role")
 public class Role extends BaseEntity {
-    private String role_name;
-    private Timestamp create_time;
-    private Timestamp update_time;
-    private String delete_status;
+    private String roleName;
+    private Timestamp createTime;
 
-    public String getRole_name() {
-        return role_name;
+    private Timestamp updateTime;
+
+    private String deleteStatus;
+
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public Timestamp getCreate_time() {
-        return create_time;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
-    public Timestamp getUpdate_time() {
-        return update_time;
+    public Timestamp getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Timestamp update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getDelete_status() {
-        return delete_status;
+    public String getDeleteStatus() {
+        return deleteStatus;
     }
 
-    public void setDelete_status(String delete_status) {
-        this.delete_status = delete_status;
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 }
