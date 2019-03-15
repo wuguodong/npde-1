@@ -1,6 +1,7 @@
 package com.heeexy.example.config.shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.heeexy.example.model.User;
 import com.heeexy.example.service.LoginService;
 import com.heeexy.example.util.constants.Constants;
 import org.apache.shiro.SecurityUtils;
@@ -50,20 +51,20 @@ public class UserRealm extends AuthorizingRealm {
 		String loginName = (String) authcToken.getPrincipal();
 		// 获取用户密码
 		String password = new String((char[]) authcToken.getCredentials());
-		JSONObject user = loginService.getUser(loginName, password);
+		User user = loginService.getUser(loginName, password);
 		if (user == null) {
 			//没找到帐号
 			throw new UnknownAccountException();
 		}
 		//交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-				user.getString("username"),
-				user.getString("password"),
+				user.getUsername(),
+				user.getPassword(),
 				//ByteSource.Util.bytes("salt"), salt=username+salt,采用明文访问时，不需要此句
 				getName()
 		);
 		//session中不需要保存密码
-		user.remove("password");
+		//user.remove("password");
 		//将用户信息放入session中
 		SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_INFO, user);
 		return authenticationInfo;

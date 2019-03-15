@@ -1,6 +1,8 @@
-package com.heeexy.example.dao;
+package com.heeexy.example.mapper;
 
 import com.alibaba.fastjson.JSONObject;
+import com.heeexy.example.model.User;
+import com.heeexy.example.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -8,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
  * @description: 登录相关dao
  * @date: 2017/10/24 11:02
  */
-public interface LoginDao {
+public interface LoginMapper extends MyMapper<User>{
 	/**
 	 * 根据用户名和密码查询对应的用户
 	 */

@@ -4,4 +4,17 @@ spring:
       username: root
       password: root
 mybatis:
+   type-aliases-package: tk.mybatis.springboot.model
    mapperLocations: classpath:/mapper/*.xml
+
+   mapper:
+       mappers:
+           - tk.mybatis.springboot.util.MyMapper
+       not-empty: false
+       identity: MYSQL
+
+   pagehelper:
+       helperDialect: mysql
+       reasonable: true
+       supportMethodsArguments: true
+       params: count=countSql

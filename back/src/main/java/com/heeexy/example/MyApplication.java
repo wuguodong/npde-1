@@ -1,11 +1,12 @@
 package com.heeexy.example;
 
-import org.mybatis.spring.annotation.MapperScan;
+import tk.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author: hxy
@@ -13,7 +14,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @date: 2017/10/24 11:55
  */
 @SpringBootApplication
-@MapperScan("com.heeexy.example.dao")
+//@ComponentScan(basePackages = {"com.yss.common"})
+@MapperScan({"com.heeexy.example.mapper","com.heeexy.example.model"})
 public class MyApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

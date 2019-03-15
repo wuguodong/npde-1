@@ -4,10 +4,11 @@ import Router from 'vue-router'
 /* layout */
 import Layout from '../views/layout/Layout'
 
-const _import = require('./_import_' + process.env.NODE_ENV)
-Vue.use(Router)
+const _import = require('./_import_' + process.env.NODE_ENV);
+Vue.use(Router);
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
+  // {path: 'system/addArchive', component: _import('archives/addArchive'), hidden: true},
   {path: '/404', component: _import('404'), hidden: true},
   {
     path: '/',
@@ -19,7 +20,7 @@ export const constantRouterMap = [
       path: 'dashboard', component: _import('dashboard/index')
     }]
   }
-]
+];
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({y: 0}),
@@ -34,6 +35,13 @@ export const asyncRouterMap = [
     meta: {title: '系统管理', icon: 'tree'},
     children: [
       {
+        path: 'founds',
+        name: '全宗管理',
+        component: _import('fonds/fonds'),
+        meta: {title: '全宗管理', icon: 'example'},
+        menu: 'fond'
+      },
+      {
         path: 'article',
         name: '文章',
         component: _import('article/article'),
@@ -41,10 +49,25 @@ export const asyncRouterMap = [
         menu: 'article'
       },
       {
+        path: 'archives',
+        name: '档案库管理',
+        component: _import('archives/archives'),
+        meta: {title: '档案库管理', icon: 'example'},
+        menu: 'article'
+      },
+      {
+        path: 'archives/addarchive',
+        name: '增加档案库',
+        component: _import('archives/addarchive'),
+        meta: {title: '增加档案库', icon: 'example'},
+        menu: 'article',
+        hidden: true
+      },
+      {
         path: 'article',
-        name: '文章',
+        name: '实体分类管理',
         component: _import('article/article'),
-        meta: {title: '组织机构管理', icon: 'example'},
+        meta: {title: '实体分类管理', icon: 'example'},
         menu: 'article'
       }
     ]
@@ -65,8 +88,15 @@ export const asyncRouterMap = [
         component: _import('user/role'),
         meta: {title: '权限管理', icon: 'password'},
         menu: 'role'
+      },
+      {
+        path: 'menu',
+        name: '菜单管理',
+        component: _import('user/menu'),
+        meta: {title: '菜单管理', icon: 'password'},
+        menu: 'role'
       }
     ]
   },
   {path: '*', redirect: '/404', hidden: true}
-]
+];
