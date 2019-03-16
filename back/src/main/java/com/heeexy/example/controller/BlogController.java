@@ -1,8 +1,10 @@
 package com.heeexy.example.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.heeexy.example.model.Blog;
 import com.heeexy.example.service.BlogService;
+import com.heeexy.example.util.CommonUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +30,10 @@ public class BlogController {
      */
     @RequiresPermissions("blog:list")
     @GetMapping("/listBlog")
-    public PageInfo<Blog> getAll(Blog blog) {
+    public JSONObject getAll(Blog blog) {
         List<Blog> blogs = blogService.getAll(blog);
-        return new PageInfo<>(blogs);
+        PageInfo<Blog> blogPageInfo =  new PageInfo<Blog>(blogs);
+        return CommonUtil.successJson(blogPageInfo);
     }
 
     /**

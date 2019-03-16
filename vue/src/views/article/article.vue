@@ -10,12 +10,12 @@
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
-      <!--<el-table-column align="center" label="序号" width="80">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span v-text="getIndex(scope.$index)"> </span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column align="center" prop="content" label="文章" style="width: 60px;"></el-table-column>-->
+      <el-table-column align="center" label="序号" width="80">
+        <template slot-scope="scope">
+          <span v-text="getIndex(scope.$index)"> </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="content" label="文章" style="width: 60px;"></el-table-column>
       <el-table-column align="center" label="创建时间" width="170">
         <template slot-scope="scope">
           <span>{{scope.row.createTime}}</span>
@@ -113,7 +113,7 @@
       showCreate() {
         //显示新增对话框
         this.tempBlog.content = "";
-        this.dialogStatus = "create"
+        this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
       showUpdate($index) {
