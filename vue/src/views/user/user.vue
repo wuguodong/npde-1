@@ -112,7 +112,6 @@
     },
     created() {
       this.getList();
-      debugger;
       if (this.hasPerm('user:add') || this.hasPerm('user:update')) {
         this.getAllRoles();
       }

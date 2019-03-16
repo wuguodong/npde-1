@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
 /* layout */
 import Layout from '../views/layout/Layout'
+import AppMain from '../views/layout/components/AppMain.vue'
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
  * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
@@ -79,6 +80,7 @@ export const asyncRouterMap = [
         path: '/user',
         redirect: 'user',
         name: '菜单权限管理',
+        component: AppMain,
         meta: {title: '用户权限', icon: 'table'},
         children: [
           {
