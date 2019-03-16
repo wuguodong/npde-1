@@ -12,10 +12,10 @@ public class BaseEntity {
     private Integer id;
 
     @Transient
-    private Integer page = 1;
+    private Integer pageNum = 1;
 
     @Transient
-    private Integer rows = 10;
+    private Integer pageRow = 50;
 
     public Integer getId() {
         return id;
@@ -25,19 +25,19 @@ public class BaseEntity {
         this.id = id;
     }
 
-    public Integer getPage() {
-        return page;
+    public Integer getPageNum() {
+        return pageNum;
     }
 
-    public void setPage(Integer page) {
-        this.page = page;
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
     }
 
-    public Integer getRows() {
-        return rows;
+    public Integer getPageRow() {
+        return pageRow;
     }
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
+    public void setPageRow(Integer pageRow) {
+        this.pageRow = pageRow;
     }
 }

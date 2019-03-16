@@ -1,18 +1,13 @@
 package com.heeexy.example.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
-import com.heeexy.example.model.Article;
 import com.heeexy.example.model.Fond;
-import com.heeexy.example.service.ArticleService;
 import com.heeexy.example.service.FondService;
-import com.heeexy.example.util.CommonUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -42,11 +37,11 @@ public class FondController {
      */
     @RequiresPermissions("fond:add")
     @PostMapping("/addFond")
-    public ModelMap addArticle(@RequestBody Fond fond) {
+    public ModelMap addFond(@RequestBody Fond fond) {
         ModelMap result = new ModelMap();
         String msg = fond.getId() == null ? "新增成功!" : "更新成功!";
         fondService.save(fond);
-        result.put("article", fond);
+        result.put("fond", fond);
         result.put("msg", msg);
         return result;
     }
@@ -60,7 +55,7 @@ public class FondController {
         ModelMap result = new ModelMap();
         String msg = fond.getId() == null ? "新增成功!" : "更新成功!";
         fondService.save(fond);
-        result.put("article", fond);
+        result.put("fond", fond);
         result.put("msg", msg);
         return result;
     }

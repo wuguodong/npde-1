@@ -15,7 +15,7 @@
             </el-select>
           </template>
           <el-button type="primary" style="float: right" icon="el-icon-circle-plus" @click="showCreate"
-                     v-if="hasPerm('article:add')">添加档案库类别
+                     v-if="hasPerm('blog:add')">添加档案库类别
           </el-button>
         </el-form-item>
       </el-form>
@@ -40,7 +40,7 @@
           <span>{{scope.row.createTime}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('article:update')">
+      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('blog:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
           <el-button type="danger" icon="delete" @click="removeArchive(scope.$index)">删除</el-button>
@@ -50,10 +50,10 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="listQuery.pageNum"
-      :page-size="listQuery.pageRow"
+      :current-pageNum="listQuery.pageNum"
+      :pageNum-size="listQuery.pageRow"
       :total="totalCount"
-      :page-sizes="[10, 20, 50, 100]"
+      :pageNum-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -110,12 +110,12 @@
     methods: {
       getList() {
         //查询列表
-        if (!this.hasPerm('article:list')) {
+        if (!this.hasPerm('blog:list')) {
           return
         }
         this.listLoading = true;
         this.api({
-          url: "/article/listArticle",
+          url: "/blog/listArticle",
           method: "get",
           params: this.listQuery
         }).then(data => {
@@ -154,7 +154,7 @@
       createArticle() {
         //保存新文章
         this.api({
-          url: "/article/addArticle",
+          url: "/blog/addArticle",
           method: "post",
           data: this.tempArticle
         }).then(() => {
@@ -165,7 +165,7 @@
       updateArticle() {
         //修改文章
         this.api({
-          url: "/article/updateArticle",
+          url: "/blog/updateArticle",
           method: "post",
           data: this.tempArticle
         }).then(() => {

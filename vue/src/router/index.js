@@ -30,7 +30,7 @@ export const asyncRouterMap = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/article',
+    redirect: '/system/blog',
     name: '功能模块',
     meta: {title: '系统管理', icon: 'tree'},
     children: [
@@ -42,33 +42,26 @@ export const asyncRouterMap = [
         menu: 'fond'
       },
       {
-        path: 'article',
+        path: 'blog',
         name: '文章',
         component: _import('article/article'),
         meta: {title: '文章', icon: 'example'},
-        menu: 'article'
+        menu: 'blog'
       },
       {
         path: 'archives',
         name: '档案库管理',
         component: _import('archives/archives'),
         meta: {title: '档案库管理', icon: 'example'},
-        menu: 'article'
+        menu: 'blog'
       },
       {
         path: 'archives/addarchive',
         name: '增加档案库',
         component: _import('archives/addarchive'),
         meta: {title: '增加档案库', icon: 'example'},
-        menu: 'article',
+        menu: 'blog',
         hidden: true
-      },
-      {
-        path: 'article',
-        name: '实体分类管理',
-        component: _import('article/article'),
-        meta: {title: '实体分类管理', icon: 'example'},
-        menu: 'article'
       }
     ]
   },

@@ -1,6 +1,5 @@
 package com.heeexy.example.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.heeexy.example.model.Fond;
 import com.heeexy.example.mapper.FondMapper;
@@ -19,8 +18,8 @@ public class FondService {
     private FondMapper fondMapper;
 
     public List<Fond> getAll(Fond fond) {
-        if (fond.getPage() != null && fond.getRows() != null) {
-            PageHelper.startPage(fond.getPage(), fond.getRows());
+        if (fond.getPageNum() != null && fond.getPageRow() != null) {
+            PageHelper.startPage(fond.getPageNum(), fond.getPageRow());
         }
         return fondMapper.selectAll();
     }

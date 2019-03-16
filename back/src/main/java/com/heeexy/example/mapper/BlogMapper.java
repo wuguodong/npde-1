@@ -1,17 +1,14 @@
 package com.heeexy.example.mapper;
 
-import com.alibaba.fastjson.JSONObject;
-import com.heeexy.example.model.Article;
+import com.heeexy.example.model.Blog;
 import com.heeexy.example.util.MyMapper;
-
-import java.util.List;
 
 /**
  * @author: hxy
  * @description: 文章Dao层
  * @date: 2017/10/24 16:06
  */
-public interface ArticleMapper extends MyMapper<Article> {
+public interface BlogMapper extends MyMapper<Blog> {
     ///**
     // * 新增文章
     // */

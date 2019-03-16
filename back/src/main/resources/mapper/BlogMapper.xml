@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.heeexy.example.mapper.ArticleMapper">
-
+<mapper namespace="com.heeexy.example.mapper.BlogMapper">
     <!--<insert id="addArticle" parameterType="com.alibaba.fastjson.JSONObject">-->
-        <!--INSERT INTO article-->
+        <!--INSERT Iblobicle-->
             <!--(content)-->
         <!--VALUES-->
             <!--(#{content})-->
@@ -12,7 +11,7 @@
 
     <!--<select id="countArticle" resultType="Integer">-->
         <!--SELECT count(0)-->
-        <!--FROM article w-->
+        <!--Fblobicle w-->
         <!--WHERE w.deleteStatus = '1'-->
     <!--</select>-->
 
@@ -21,14 +20,14 @@
             <!--w.id                                      id,-->
             <!--w.content                                 content,-->
             <!--date_format(w.create_time, '%Y.%m.%d %T') createTime-->
-        <!--FROM article w-->
+        <!--Fblobicle w-->
         <!--WHERE w.deleteStatus = '1'-->
         <!--ORDER BY w.id DESC-->
         <!--LIMIT #{offSet}, #{pageRow}-->
     <!--</select>-->
 
     <!--<update id="updateArticle" parameterType="com.alibaba.fastjson.JSONObject">-->
-        <!--UPDATE article-->
+        <!--UPDblobicle-->
         <!--SET-->
             <!--content = #{content}-->
         <!--WHERE id = #{id}-->

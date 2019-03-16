@@ -55,7 +55,7 @@ public class LoginService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-        user.setDeleteStatus("1");
+        //user.setDeleteStatus("1");
         User user1 = loginMapper.selectOne(user);
         return user1;
     }

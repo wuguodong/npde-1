@@ -13,11 +13,10 @@ public class User extends BaseEntity {
     private String password;
     private String nickname;
     private int roleId;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+    private String createTime;
+    private String updateTime;
     @Transient
     private String deleteStatus;
-
 
     public String getUsername() {
         return username;
@@ -51,19 +50,19 @@ public class User extends BaseEntity {
         this.roleId = roleId;
     }
 
-    public Timestamp getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Timestamp getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 

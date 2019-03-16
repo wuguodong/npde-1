@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" @click="showCreate" v-if="hasPerm('article:add')">添加全宗
+          <el-button type="primary" icon="plus" @click="showCreate" v-if="hasPerm('blog:add')">添加全宗
           </el-button>
         </el-form-item>
       </el-form>
@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="content" label="备注" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('article:update')">
+      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('blog:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
           <el-button type="danger" icon="delete" @click="showUpdate(scope.$index)">删除</el-button>
@@ -34,10 +34,10 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="listQuery.pageNum"
-      :page-size="listQuery.pageRow"
+      :current-pageNum="listQuery.pageNum"
+      :pageNum-size="listQuery.pageRow"
       :total="totalCount"
-      :page-sizes="[10, 20, 50, 100]"
+      :pageNum-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">

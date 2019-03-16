@@ -37,10 +37,10 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="listQuery.pageNum"
-      :page-size="listQuery.pageRow"
+      :current-pageNum="listQuery.pageNum"
+      :pageNum-size="listQuery.pageRow"
       :total="totalCount"
-      :page-sizes="[10, 20, 50, 100]"
+      :pageNum-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">

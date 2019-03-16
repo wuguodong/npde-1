@@ -29,7 +29,7 @@ admin/123456 管理员身份登录,可以新增用户,角色.
 角色的作用其实只是用来管理分配权限的,真正的验证只验证**权限** ,而不去管你是否是那种角色.体现在代码上就是接口上注解为
 
 ```java
-@RequiresPermissions("article:add")
+@RequiresPermissions("blog:add")
 ```
 
 而不是
@@ -50,14 +50,14 @@ admin/123456 管理员身份登录,可以新增用户,角色.
          "menuList":[  
             "role",
             "user",
-            "article"
+            "blog"
          ],
          "roleId":1,
          "nickname":"超级用户",
          "roleName":"管理员",
          "permissionList":[  
-            "article:list",
-            "article:add",
+            "blog:list",
+            "blog:add",
             "user:list",
          ],
          "userId":10003

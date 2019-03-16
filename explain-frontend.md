@@ -27,14 +27,14 @@
          "menuList":[  
             "role",
             "user",
-            "article"
+            "blog"
          ],
          "roleId":1,
          "nickname":"超级用户",
          "roleName":"管理员",
          "permissionList":[  
-            "article:list",
-            "article:add",
+            "blog:list",
+            "blog:add",
             "user:list",
          ],
          "userId":10003
@@ -55,7 +55,7 @@ store.dispatch('GenerateRoutes', userPermission).then(() => {
 
 ## 页面元素
 
-​	只需在按钮上添加 ` v-if="hasPerm('article:add')"` 就可以根据用户的权限来控制本页面元素(比如按钮)是否显示了.
+​	只需在按钮上添加 ` v-if="hasPerm('blog:add')"` 就可以根据用户的权限来控制本页面元素(比如按钮)是否显示了.
 
 ​	hasPerm方法也非常简单 
 

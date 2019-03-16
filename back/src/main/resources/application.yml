@@ -8,9 +8,10 @@ mybatis:
    mapperLocations: classpath:/mapper/*.xml
    configuration:
       map-underscore-to-camel-case: true
+      cache-enabled: false
    mapper:
        mappers:
-           - tk.mybatis.springboot.util.MyMapper
+           - com.heeexy.example.util.MyMapper
        not-empty: false
        identity: MYSQL
 
