@@ -73,7 +73,7 @@
 
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFormVisibleControl">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="success" @click="createFond">创 建</el-button>
         <el-button type="primary" v-else @click="updateFond">修 改</el-button>
       </div>
@@ -159,6 +159,7 @@
       showUpdate($index) {
         //显示修改对话框
         this.tempFond = this.list[$index];
+        this.tempFond.oldId = this.tempFond.id;
         this.dialogStatus = "update";
         this.dialogFormVisible = true;
       },
@@ -203,7 +204,12 @@
             _vue.$message.error("删除失败")
           })
         })
+      },
+      dialogFormVisibleControl(){
+        this.getList();
+        this.dialogFormVisible = false
       }
+
     }
   }
 </script>

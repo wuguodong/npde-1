@@ -12,9 +12,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
-
-import javax.jws.soap.SOAPBinding;
 
 /**
  * @author: hxy

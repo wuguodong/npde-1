@@ -83,24 +83,18 @@
 
           </el-tab-pane>
           <el-tab-pane label="全宗权限">
-            <div>
-              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
-            <span style="width: 100px;display: inline-block;">
-              <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
-                         style="width:80px;"
-                         @click="checkAll(_index)">{{menu.menuName}}</el-button>
-            </span>
-                <div style="display: inline-block;margin-left:20px;">
-                  <el-checkbox-group v-model="tempRole.permissions">
-                    <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
-                                 :key="perm.id">
-                      <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
-                    </el-checkbox>
-                  </el-checkbox-group>
-                </div>
-              </div>
-              <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
-            </div>
+            <el-table :data="fondList"
+                      v-loading.body="listLoading"
+                      element-loading-text="拼命加载中" border fit
+                      highlight-current-row>
+              <el-table-column
+                type="selection"
+                width="55">
+              </el-table-column>
+              <el-table-column align="center" prop="id" label="全宗号">
+              </el-table-column>
+              <el-table-column align="center" prop="fondName" label="全宗名"></el-table-column>
+            </el-table>
           </el-tab-pane>
         </el-tabs>
 
@@ -140,6 +134,7 @@
     },
     created() {
       this.getList();
+      this.getFondList();
       this.getAllPermisson();
     },
     methods: {
@@ -167,11 +162,11 @@
         //查询列表
         this.listLoading = true;
         this.api({
-          url: "/user/listRole",
+          url: "/fond/listFond",
           method: "get"
         }).then(data => {
           this.listLoading = false;
-          this.list = data.list;
+          this.fondList = data.list;
         })
       },
       getIndex($index) {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import api from '@/utils/api'
 // in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
 /* layout */
 import Layout from '../views/layout/Layout'
@@ -21,7 +22,6 @@ const _import = require('./_import_' + process.env.NODE_ENV);
 Vue.use(Router);
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
-  // {path: 'system/addArchive', component: _import('archives/addArchive'), hidden: true},
   {path: '/404', component: _import('404'), hidden: true},
   {
     path: '/',
@@ -111,3 +111,12 @@ export const asyncRouterMap = [
 
   {path: '*', redirect: '/404', hidden: true}
 ];
+
+
+export function getasyncRouterMap(token) {
+  return api({
+    url: '/fond/listUserFond',
+    method: 'get',
+    params: {token}
+  })
+}

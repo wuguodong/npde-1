@@ -12,6 +12,9 @@ public class BaseEntity {
     private Integer id;
 
     @Transient
+    private Integer oldId;//修改之前的id值，用来更新使用
+
+    @Transient
     private Integer pageNum = 1;
 
     @Transient
@@ -39,5 +42,13 @@ public class BaseEntity {
 
     public void setPageRow(Integer pageRow) {
         this.pageRow = pageRow;
+    }
+
+    public Integer getOldId() {
+        return oldId;
+    }
+
+    public void setOldId(Integer oldId) {
+        this.oldId = oldId;
     }
 }

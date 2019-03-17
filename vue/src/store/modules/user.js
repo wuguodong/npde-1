@@ -60,11 +60,11 @@ const user = {
           //cookie保存登录状态,仅靠vuex保存的话,页面刷新就会丢失登录状态
           setToken();
           //生成路由
-          let userPermission = data.userPermission ;
+          let userPermission = data.userPermission;
           store.dispatch('GenerateRoutes', userPermission).then(() => {
             //生成该用户的新路由json操作完毕之后,调用vue-router的动态新增路由方法,将新路由添加
             router.addRoutes(store.getters.addRouters)
-          })
+          });
           resolve(data)
         }).catch(error => {
           reject(error)

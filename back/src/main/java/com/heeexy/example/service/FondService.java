@@ -3,6 +3,7 @@ package com.heeexy.example.service;
 import com.github.pagehelper.PageHelper;
 import com.heeexy.example.model.Fond;
 import com.heeexy.example.mapper.FondMapper;
+import com.heeexy.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class FondService {
 
     public void save(Fond fond) {
         if (fond.getId() != null) {
-            Fond f = fondMapper.selectByPrimaryKey(fond.getId());
+            Fond f = fondMapper.selectByPrimaryKey(fond.getOldId());
             if (null != f) {
                 fondMapper.updateByPrimaryKey(fond);
             } else {
@@ -43,5 +44,10 @@ public class FondService {
         } else {
             fondMapper.insert(fond);
         }
+    }
+
+
+    public List<Fond> selectFondsByUser(User user) {
+        return fondMapper.selectFondsByUser(user);
     }
 }
