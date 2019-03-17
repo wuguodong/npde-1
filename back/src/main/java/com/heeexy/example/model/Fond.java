@@ -6,7 +6,7 @@ package com.heeexy.example.model;
 public class Fond extends BaseEntity {
     private String fondName;
     private String parentName;
-    private int isStorage;
+    private int storage;
     private String fondDesc;
 
     public String getFondName() {
@@ -25,12 +25,12 @@ public class Fond extends BaseEntity {
         this.parentName = parentName;
     }
 
-    public int getIsStorage() {
-        return isStorage;
+    public int getStorage() {
+        return storage;
     }
 
-    public void setIsStorage(int isStorage) {
-        this.isStorage = isStorage;
+    public void setStorage(int storage) {
+        this.storage = storage;
     }
 
     public String getFondDesc() {

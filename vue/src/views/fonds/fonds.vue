@@ -10,7 +10,7 @@
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column align="center" prop="fondName" label="全宗名" style="width: 60px;"></el-table-column>
       <el-table-column align="center" prop="parentName" label="上级全宗" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" prop="isStorage" label="是否立档单位" :formatter="formatterNum"
+      <el-table-column align="center" prop="storage" label="是否立档单位" :formatter="formatterNum"
                        style="width: 60px;"></el-table-column>
       <el-table-column align="center" label="创建时间" width="170">
         <template slot-scope="scope">
@@ -27,7 +27,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="fondDesc" label="备注" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('fond:update')">
+      <el-table-column align="center" label="管理" width="500" v-if="hasPerm('fond:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
           <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
@@ -64,7 +64,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否有馆藏">
-          <el-switch v-model="tempFond.isStorage" active-value="1" inactiveValue="0"></el-switch>
+          <el-switch v-model="tempFond.storage" active-value="1" inactiveValue="0"></el-switch>
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" v-model="tempFond.fondDesc"></el-input>
@@ -104,7 +104,7 @@
           id: "",
           fondName: "",
           parentName: "",
-          isStorage: "",
+          storage: "",
           desc: ""
         }
       }
@@ -195,7 +195,7 @@
           let fond = _vue.list[$index];
           fond.deleteStatus = '2';
           _vue.api({
-            url: "/fond/updateFond",
+            url: "/fond/deleteFond",
             method: "post",
             data: fond
           }).then(() => {

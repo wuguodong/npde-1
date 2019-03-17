@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 /**
  * Created by lh on 2019-3-13.
  */
-@Table(name = "sys_user")
 public class User extends BaseEntity {
     private String username;
     private String password;

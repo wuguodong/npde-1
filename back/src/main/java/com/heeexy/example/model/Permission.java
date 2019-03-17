@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 /**
  * Created by lh on 2019-3-13.
  */
-@Table(name = "sys_permission")
 public class Permission extends BaseEntity {
     private String menuCode;
     private String menuName;

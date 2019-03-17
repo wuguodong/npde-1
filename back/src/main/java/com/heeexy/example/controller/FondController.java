@@ -65,4 +65,14 @@ public class FondController {
         fondService.save(fond);
         return CommonUtil.successJson(fond);
     }
+
+    /**
+     * 删除全宗
+     */
+    @RequiresPermissions("fond:delete")
+    @PostMapping("/deleteFond")
+    public JSONObject deleteFond(@RequestBody Fond fond) {
+        fondService.deleteById(fond.getId());
+        return CommonUtil.successJson(fond);
+    }
 }

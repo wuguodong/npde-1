@@ -69,6 +69,13 @@ export const asyncRouterMap = [
         menu: 'blog'
       },
       {
+        path: 'archives',
+        name: '组织机构管理',
+        component: _import('archives/archives'),
+        meta: {title: '组织机构管理', icon: 'example'},
+        menu: 'blog'
+      },
+      {
         path: 'archives/addarchive',
         name: '增加档案库',
         component: _import('archives/addarchive'),

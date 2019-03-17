@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 /**
  * Created by lh on 2019-3-13.
  */
-@Table(name = "sys_role")
 public class Role extends BaseEntity {
     private String roleName;
     private Timestamp createTime;

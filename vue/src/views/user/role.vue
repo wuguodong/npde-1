@@ -60,7 +60,7 @@
           </el-input>
         </el-form-item>
 
-        <el-tabs type="border-card">
+        <el-tabs type="border-card" style="margin-right: 40px">
           <el-tab-pane label="菜单权限">
             <div>
               <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
@@ -87,14 +87,80 @@
                       v-loading.body="listLoading"
                       element-loading-text="拼命加载中" border fit
                       highlight-current-row>
-              <el-table-column
-                type="selection"
-                width="55">
+              <el-table-column align="center" prop="id" label="全宗号" width="80">
               </el-table-column>
+              <el-table-column align="center" prop="fondName" label="全宗名" width="200"></el-table-column>
+              <el-table-column align="center" label="操作权限" v-if="hasPerm('fond:update')">
+                <template slot-scope="scope">
+                  <el-button type="primary" icon="edit" @click="showFondRoleUpdate(scope.$index)">数据权限</el-button>
+                  <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createRole">创 建</el-button>
+        <el-button type="primary" v-else @click="updateRole">修 改</el-button>
+      </div>
+    </el-dialog>
+
+    <!--全宗数据权限弹出对话框-->
+    <el-dialog :title="textMap[dialogFondStatus]" :visible.sync="dialogFondFormVisible">
+      <el-form class="small-space" :model="tempRole" label-position="left" label-width="100px"
+               style='width: 600px; margin-left:50px;'>
+        <el-form-item label="角色名称" required>
+          <el-input type="text" v-model="tempRole.roleName" style="width: 250px;">
+          </el-input>
+        </el-form-item>
+
+        <el-tabs type="border-card" style="margin-right: 40px">
+          <el-tab-pane label="文件管理权限">
+            <div>
+              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
+                <span style="width: 100px;display: inline-block;">
+                  <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
+                             style="width:80px;"
+                             @click="checkAll(_index)">{{menu.menuName}}
+                  </el-button>
+                </span>
+                <div style="display: inline-block;margin-left:20px;">
+                  <el-checkbox-group v-model="tempRole.permissions">
+                    <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
+                                 :key="perm.id">
+                      <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="整理编目权限">
+            <el-table :data="fondList"
+                      v-loading.body="listLoading"
+                      element-loading-text="拼命加载中" border fit
+                      highlight-current-row>
               <el-table-column align="center" prop="id" label="全宗号">
               </el-table-column>
               <el-table-column align="center" prop="fondName" label="全宗名"></el-table-column>
+              <el-table-column align="center" label="操作权限" width="200" v-if="hasPerm('fond:update')">
+                <template slot-scope="scope">
+                  <el-button type="primary" icon="edit" @click="showFondRoleUpdate(scope.$index)">数据权限</el-button>
+                  <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
+                </template>
+              </el-table-column>
             </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="储藏室权限">
+
+          </el-tab-pane>
+          <el-tab-pane label="库房权限">
+
           </el-tab-pane>
         </el-tabs>
 
@@ -111,7 +177,9 @@
   </div>
 </template>
 <script>
+  import ElTabPane from "../../../node_modules/element-ui/packages/tabs/src/tab-pane";
   export default {
+    components: {ElTabPane},
     data() {
       return {
         list: [],//表格的数据
@@ -120,6 +188,9 @@
         listLoading: false,//数据加载等待动画
         dialogStatus: 'create',
         dialogFormVisible: false,
+
+        dialogFondStatus: 'create',
+        dialogFondFormVisible: false,
         textMap: {
           update: '编辑',
           create: '新建角色'
@@ -178,7 +249,7 @@
         this.tempRole.roleName = '';
         this.tempRole.roleId = '';
         this.tempRole.permissions = [];
-        this.dialogStatus = "create"
+        this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
       showUpdate($index) {
@@ -192,9 +263,27 @@
             this.tempRole.permissions.push(perm[j].permissionId);
           }
         }
-        this.dialogStatus = "update"
+        this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
+
+
+      showFondRoleUpdate($index) {
+//        let role = this.list[$index];
+//        this.tempRole.roleName = role.roleName;
+//        this.tempRole.roleId = role.roleId;
+//        this.tempRole.permissions = [];
+//        for (let i = 0; i < role.menus.length; i++) {
+//          let perm = role.menus[i].permissions;
+//          for (let j = 0; j < perm.length; j++) {
+//            this.tempRole.permissions.push(perm[j].permissionId);
+//          }
+//        }
+        this.dialogFondStatus = "update";
+        this.dialogFondFormVisible = true
+      },
+
+
       createRole() {
         if (!this.checkRoleNameUnique()) {
           return;
