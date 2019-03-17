@@ -52,7 +52,7 @@ public class FondController {
     @RequiresPermissions("fond:update")
     @PostMapping("/updateFond")
     public JSONObject updateFond(@RequestBody Fond fond) {
-        fondService.save(fond);
+        fondService.deleteById(fond.getId());
         return CommonUtil.successJson(fond);
     }
 }

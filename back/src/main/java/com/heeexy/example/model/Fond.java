@@ -1,13 +1,11 @@
 package com.heeexy.example.model;
 
-import java.io.Serializable;
-
 /**
  * Created by lh on 2019-3-13.
  */
 public class Fond extends BaseEntity {
     private String fondName;
-    private int parentId;
+    private String parentName;
     private int isStorage;
     private String fondDesc;
 
@@ -19,12 +17,12 @@ public class Fond extends BaseEntity {
         this.fondName = fondName;
     }
 
-    public int getParentId() {
-        return parentId;
+    public String getParentName() {
+        return parentName;
     }
 
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public int getIsStorage() {

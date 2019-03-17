@@ -15,11 +15,12 @@
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="id"label="全宗号" width="80">
+      <el-table-column align="center" prop="id" label="全宗号" width="80">
       </el-table-column>
       <el-table-column align="center" prop="fondName" label="全宗名" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" prop="content" label="上级全宗" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" prop="isStorage" label="是否立档单位" style="width: 60px;"></el-table-column>
+      <el-table-column align="center" prop="parentName" label="上级全宗" style="width: 60px;"></el-table-column>
+      <el-table-column align="center" prop="isStorage" label="是否立档单位" :formatter="formatterNum"
+                       style="width: 60px;"></el-table-column>
       <el-table-column align="center" label="创建时间" width="170">
         <template slot-scope="scope">
           <span>{{scope.row.createTime}}</span>
@@ -29,7 +30,7 @@
       <el-table-column align="center" label="管理" width="200" v-if="hasPerm('fond:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
-          <el-button type="danger" icon="delete" @click="showUpdate(scope.$index)">删除</el-button>
+          <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,24 +46,28 @@
 
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="addFondsForm" :model="addFondsForm" label-width="100px">
+      <el-form ref="tempFond" :model="tempFond" label-width="100px">
         <el-form-item label="全宗号">
-          <el-input v-model="addFondsForm.id"></el-input>
+          <el-input v-model="tempFond.id"></el-input>
         </el-form-item>
         <el-form-item label="全宗名">
-          <el-input v-model="addFondsForm.fondName"></el-input>
+          <el-input v-model="tempFond.fondName"></el-input>
         </el-form-item>
-        <el-form-item label="上级全宗">
-          <el-select v-model="addFondsForm.parentId" placeholder="请选择上级全宗">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+        <el-form-item label="上级全宗" v-model="list">
+          <el-select v-model="tempFond.parentName" placeholder="请选择上级全宗">
+            <el-option
+              v-for="item in list" v-if="item.id!==tempFond.id"
+              :key="item.id"
+              :label="item.fondName"
+              :value="item.fondName">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="是否有馆藏">
-          <el-switch v-model="addFondsForm.isStorage" active-value="1" inactiveValue="0"></el-switch>
+          <el-switch v-model="tempFond.isStorage" active-value="1" inactiveValue="0"></el-switch>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input type="textarea" v-model="addFondsForm.fondDesc"></el-input>
+          <el-input type="textarea" v-model="tempFond.fondDesc"></el-input>
         </el-form-item>
       </el-form>
 
@@ -81,13 +86,6 @@
   export default {
     data() {
       return {
-        addFondsForm: {
-          id: '',
-          fondName: '',
-          parentId: '',
-          isStorage: '',
-          fondDesc: ''
-        },
         totalCount: 0, //分页组件--数据总条数
         list: [],//表格的数据
         listLoading: false,//数据加载等待动画
@@ -104,8 +102,8 @@
         },
         tempFond: {
           id: "",
-          name: "",
-          parentId: "",
+          fondName: "",
+          parentName: "",
           isStorage: "",
           desc: ""
         }
@@ -115,6 +113,13 @@
       this.getList();
     },
     methods: {
+      formatterNum(row, column, cellValue){
+        if (cellValue == '0') {
+          return '否'
+        } else if (cellValue == '1') {
+          return '是'
+        }
+      },
       getList() {
         //查询列表
         if (!this.hasPerm('fond:list')) {
@@ -133,12 +138,12 @@
       },
       handleSizeChange(val) {
         //改变每页数量
-        this.listQuery.pageRow = val
+        this.listQuery.pageRow = val;
         this.handleFilter();
       },
       handleCurrentChange(val) {
         //改变页码
-        this.listQuery.pageNum = val
+        this.listQuery.pageNum = val;
         this.getList();
       },
       getIndex($index) {
@@ -153,8 +158,7 @@
       },
       showUpdate($index) {
         //显示修改对话框
-        this.tempFond.id = this.list[$index].id;
-        this.tempFond.name = this.list[$index].name;
+        this.tempFond = this.list[$index];
         this.dialogStatus = "update";
         this.dialogFormVisible = true;
       },
@@ -163,7 +167,7 @@
         this.api({
           url: "/fond/addFond",
           method: "post",
-          data: this.addFondsForm
+          data: this.tempFond
         }).then(() => {
           this.getList();
           this.dialogFormVisible = false;
@@ -180,6 +184,26 @@
           this.dialogFormVisible = false;
         })
       },
+      removeFond($index) {
+        let _vue = this;
+        this.$confirm('确定删除此全宗?', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          type: 'warning'
+        }).then(() => {
+          let fond = _vue.list[$index];
+          fond.deleteStatus = '2';
+          _vue.api({
+            url: "/fond/updateFond",
+            method: "post",
+            data: fond
+          }).then(() => {
+            _vue.getList()
+          }).catch(() => {
+            _vue.$message.error("删除失败")
+          })
+        })
+      }
     }
   }
 </script>
