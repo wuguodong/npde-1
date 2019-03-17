@@ -48,7 +48,7 @@ export const asyncRouterMap = [
     meta: {title: '系统管理', icon: 'tree'},
     children: [
       {
-        path: 'found',
+        path: 'fond',
         name: '全宗管理',
         component: _import('fonds/fonds'),
         meta: {title: '全宗管理', icon: 'example'},
@@ -69,19 +69,11 @@ export const asyncRouterMap = [
         menu: 'blog'
       },
       {
-        path: 'oragnization',
+        path: 'organization',
         name: '组织机构管理',
-        component: _import('oragnization/oragnization'),
+        component: _import('organization/organization'),
         meta: {title: '组织机构管理', icon: 'example'},
-        menu: 'oragnization'
-      },
-      {
-        path: 'archives/addarchive',
-        name: '增加档案库',
-        component: _import('archives/addarchive'),
-        meta: {title: '增加档案库', icon: 'example'},
-        menu: 'blog',
-        hidden: true
+        menu: 'organization'
       },
       {
         path: '/user',
