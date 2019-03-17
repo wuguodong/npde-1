@@ -45,7 +45,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
+      state.addRouters = routers;
       state.routers = constantRouterMap.concat(routers) //将固定路由和新增路由进行合并, 成为本用户最终的全部路由信息
     }
   },
@@ -57,7 +57,7 @@ const permission = {
         const role = userPermission.roleName;
         const menus = userPermission.menuList;
         //声明 该角色可用的路由
-        let accessedRouters
+        let accessedRouters;
         if (role === '管理员') {
           //如果角色里包含'管理员',那么所有的路由都可以用
           //其实管理员也拥有全部菜单,这里主要是利用角色判断,节省加载时间
@@ -67,7 +67,7 @@ const permission = {
           accessedRouters = filterAsyncRouter(asyncRouterMap, menus)
         }
         //执行设置路由的方法
-        commit('SET_ROUTERS', accessedRouters)
+        commit('SET_ROUTERS', accessedRouters);
         resolve()
       })
     }

@@ -48,7 +48,7 @@ export const asyncRouterMap = [
     meta: {title: '系统管理', icon: 'tree'},
     children: [
       {
-        path: 'founds',
+        path: 'found',
         name: '全宗管理',
         component: _import('fonds/fonds'),
         meta: {title: '全宗管理', icon: 'example'},

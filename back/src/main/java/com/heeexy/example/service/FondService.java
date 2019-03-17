@@ -34,7 +34,12 @@ public class FondService {
 
     public void save(Fond fond) {
         if (fond.getId() != null) {
-            fondMapper.updateByPrimaryKey(fond);
+            Fond f = fondMapper.selectByPrimaryKey(fond.getId());
+            if (null != f) {
+                fondMapper.updateByPrimaryKey(fond);
+            } else {
+                fondMapper.insert(fond);
+            }
         } else {
             fondMapper.insert(fond);
         }

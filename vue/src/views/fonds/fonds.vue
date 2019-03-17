@@ -3,28 +3,30 @@
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" @click="showCreate" v-if="hasPerm('blog:add')">添加全宗
+          <el-button type="primary" icon="plus" @click="showCreate" v-if="hasPerm('fond:add')">添加全宗
           </el-button>
         </el-form-item>
       </el-form>
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
-      <el-table-column align="center" label="全宗号" width="80">
+      <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="content" label="全宗名" style="width: 60px;"></el-table-column>
+      <el-table-column align="center" prop="id"label="全宗号" width="80">
+      </el-table-column>
+      <el-table-column align="center" prop="fondName" label="全宗名" style="width: 60px;"></el-table-column>
       <el-table-column align="center" prop="content" label="上级全宗" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" prop="content" label="是否立档单位" style="width: 60px;"></el-table-column>
+      <el-table-column align="center" prop="isStorage" label="是否立档单位" style="width: 60px;"></el-table-column>
       <el-table-column align="center" label="创建时间" width="170">
         <template slot-scope="scope">
           <span>{{scope.row.createTime}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="content" label="备注" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('blog:update')">
+      <el-table-column align="center" prop="fondDesc" label="备注" style="width: 60px;"></el-table-column>
+      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('fond:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
           <el-button type="danger" icon="delete" @click="showUpdate(scope.$index)">删除</el-button>
@@ -40,13 +42,15 @@
       :pageNum-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="addFondsForm" :model="addFondsForm" label-width="100px">
         <el-form-item label="全宗号">
           <el-input v-model="addFondsForm.id"></el-input>
         </el-form-item>
         <el-form-item label="全宗名">
-          <el-input v-model="addFondsForm.name"></el-input>
+          <el-input v-model="addFondsForm.fondName"></el-input>
         </el-form-item>
         <el-form-item label="上级全宗">
           <el-select v-model="addFondsForm.parentId" placeholder="请选择上级全宗">
@@ -55,10 +59,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="是否有馆藏">
-          <el-switch v-model="addFondsForm.isStorage"></el-switch>
+          <el-switch v-model="addFondsForm.isStorage" active-value="1" inactiveValue="0"></el-switch>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input type="textarea" v-model="addFondsForm.desc"></el-input>
+          <el-input type="textarea" v-model="addFondsForm.fondDesc"></el-input>
         </el-form-item>
       </el-form>
 
@@ -69,6 +73,8 @@
         <el-button type="primary" v-else @click="updateFond">修 改</el-button>
       </div>
     </el-dialog>
+
+
   </div>
 </template>
 <script>
@@ -77,10 +83,10 @@
       return {
         addFondsForm: {
           id: '',
-          name: '',
+          fondName: '',
           parentId: '',
           isStorage: '',
-          desc: ''
+          fondDesc: ''
         },
         totalCount: 0, //分页组件--数据总条数
         list: [],//表格的数据
@@ -98,7 +104,10 @@
         },
         tempFond: {
           id: "",
-          content: ""
+          name: "",
+          parentId: "",
+          isStorage: "",
+          desc: ""
         }
       }
     },
@@ -108,9 +117,9 @@
     methods: {
       getList() {
         //查询列表
-//        if (!this.hasPerm('fond:list')) {
-//          return
-//        }
+        if (!this.hasPerm('fond:list')) {
+          return
+        }
         this.listLoading = true;
         this.api({
           url: "/fond/listFond",
@@ -138,37 +147,37 @@
       },
       showCreate() {
         //显示新增对话框
-        this.tempFond.content = "";
-        this.dialogStatus = "create"
+        this.tempFond.name = "";
+        this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
       showUpdate($index) {
         //显示修改对话框
         this.tempFond.id = this.list[$index].id;
-        this.tempFond.content = this.list[$index].content;
+        this.tempFond.name = this.list[$index].name;
         this.dialogStatus = "update";
-        this.dialogFormVisible = true
+        this.dialogFormVisible = true;
       },
       createFond() {
-        //保存新文章
+        //保存新全宗
         this.api({
           url: "/fond/addFond",
           method: "post",
-          data: this.tempFond
+          data: this.addFondsForm
         }).then(() => {
           this.getList();
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
         })
       },
       updateFond() {
-        //修改文章
+        //修改全宗
         this.api({
           url: "/fond/updateFond",
           method: "post",
           data: this.tempFond
         }).then(() => {
           this.getList();
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
         })
       },
     }

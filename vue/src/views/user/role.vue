@@ -50,6 +50,8 @@
         </template>
       </el-table-column>
     </el-table>
+
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form class="small-space" :model="tempRole" label-position="left" label-width="100px"
                style='width: 600px; margin-left:50px;'>
@@ -57,24 +59,52 @@
           <el-input type="text" v-model="tempRole.roleName" style="width: 250px;">
           </el-input>
         </el-form-item>
-        <el-form-item label="菜单&权限" required>
-          <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
+
+        <el-tabs type="border-card">
+          <el-tab-pane label="菜单权限">
+            <div>
+              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
             <span style="width: 100px;display: inline-block;">
               <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
                          style="width:80px;"
                          @click="checkAll(_index)">{{menu.menuName}}</el-button>
             </span>
-            <div style="display: inline-block;margin-left:20px;">
-              <el-checkbox-group v-model="tempRole.permissions">
-                <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
-                             :key="perm.id">
-                  <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
-                </el-checkbox>
-              </el-checkbox-group>
+                <div style="display: inline-block;margin-left:20px;">
+                  <el-checkbox-group v-model="tempRole.permissions">
+                    <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
+                                 :key="perm.id">
+                      <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
             </div>
-          </div>
-          <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
-        </el-form-item>
+
+          </el-tab-pane>
+          <el-tab-pane label="全宗权限">
+            <div>
+              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
+            <span style="width: 100px;display: inline-block;">
+              <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
+                         style="width:80px;"
+                         @click="checkAll(_index)">{{menu.menuName}}</el-button>
+            </span>
+                <div style="display: inline-block;margin-left:20px;">
+                  <el-checkbox-group v-model="tempRole.permissions">
+                    <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
+                                 :key="perm.id">
+                      <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+              <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -82,6 +112,8 @@
         <el-button type="primary" v-else @click="updateRole">修 改</el-button>
       </div>
     </el-dialog>
+
+
   </div>
 </template>
 <script>
@@ -89,6 +121,7 @@
     data() {
       return {
         list: [],//表格的数据
+        fondList: [],//全宗列表
         allPermission: [],
         listLoading: false,//数据加载等待动画
         dialogStatus: 'create',
@@ -120,6 +153,17 @@
         })
       },
       getList() {
+        //查询列表
+        this.listLoading = true;
+        this.api({
+          url: "/user/listRole",
+          method: "get"
+        }).then(data => {
+          this.listLoading = false;
+          this.list = data.list;
+        })
+      },
+      getFondList() {
         //查询列表
         this.listLoading = true;
         this.api({

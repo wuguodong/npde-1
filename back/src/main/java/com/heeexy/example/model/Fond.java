@@ -6,18 +6,17 @@ import java.io.Serializable;
  * Created by lh on 2019-3-13.
  */
 public class Fond extends BaseEntity {
-    private String name;
+    private String fondName;
     private int parentId;
     private int isStorage;
-    private String desc;
+    private String fondDesc;
 
-
-    public String getName() {
-        return name;
+    public String getFondName() {
+        return fondName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFondName(String fondName) {
+        this.fondName = fondName;
     }
 
     public int getParentId() {
@@ -36,11 +35,11 @@ public class Fond extends BaseEntity {
         this.isStorage = isStorage;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getFondDesc() {
+        return fondDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setFondDesc(String fondDesc) {
+        this.fondDesc = fondDesc;
     }
 }

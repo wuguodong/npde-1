@@ -1,8 +1,11 @@
 package com.heeexy.example.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.heeexy.example.model.Blog;
 import com.heeexy.example.model.Fond;
 import com.heeexy.example.service.FondService;
+import com.heeexy.example.util.CommonUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -27,9 +30,10 @@ public class FondController {
      */
     @RequiresPermissions("fond:list")
     @GetMapping("/listFond")
-    public PageInfo<Fond> getAll(Fond fond) {
+    public JSONObject getAll(Fond fond) {
         List<Fond> fondList = fondService.getAll(fond);
-        return new PageInfo<Fond>(fondList);
+        PageInfo<Fond> fondPageInfo = new PageInfo<Fond>(fondList);
+        return CommonUtil.successJson(fondPageInfo);
     }
 
     /**
@@ -37,13 +41,9 @@ public class FondController {
      */
     @RequiresPermissions("fond:add")
     @PostMapping("/addFond")
-    public ModelMap addFond(@RequestBody Fond fond) {
-        ModelMap result = new ModelMap();
-        String msg = fond.getId() == null ? "新增成功!" : "更新成功!";
+    public JSONObject addFond(@RequestBody Fond fond) {
         fondService.save(fond);
-        result.put("fond", fond);
-        result.put("msg", msg);
-        return result;
+        return CommonUtil.successJson(fond);
     }
 
     /**
@@ -51,12 +51,8 @@ public class FondController {
      */
     @RequiresPermissions("fond:update")
     @PostMapping("/updateFond")
-    public ModelMap updateFond(@RequestBody Fond fond) {
-        ModelMap result = new ModelMap();
-        String msg = fond.getId() == null ? "新增成功!" : "更新成功!";
+    public JSONObject updateFond(@RequestBody Fond fond) {
         fondService.save(fond);
-        result.put("fond", fond);
-        result.put("msg", msg);
-        return result;
+        return CommonUtil.successJson(fond);
     }
 }
