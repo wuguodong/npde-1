@@ -36,7 +36,7 @@ public class FondController {
     }
 
     /**
-     * 查询全宗列表
+     * 根据用户查找用户被授权访问的全宗列表
      */
     @RequiresPermissions("fond:list")
     @GetMapping("/listUserFond")

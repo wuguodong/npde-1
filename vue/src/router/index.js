@@ -69,11 +69,11 @@ export const asyncRouterMap = [
         menu: 'blog'
       },
       {
-        path: 'archives',
+        path: 'oragnization',
         name: '组织机构管理',
-        component: _import('archives/archives'),
+        component: _import('oragnization/oragnization'),
         meta: {title: '组织机构管理', icon: 'example'},
-        menu: 'blog'
+        menu: 'oragnization'
       },
       {
         path: 'archives/addarchive',

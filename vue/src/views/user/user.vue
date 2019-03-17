@@ -31,8 +31,6 @@
           </el-button>
           <el-button type="danger" icon="delete" v-if="hasPerm('user:delete')" @click="removeUser(scope.$index)">删除
           </el-button>
-
-          <!--v-if="hasPerm('user:add')" @click="showCreate"-->
         </template>
       </el-table-column>
     </el-table>
