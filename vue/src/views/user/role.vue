@@ -60,10 +60,10 @@
           </el-input>
         </el-form-item>
 
-        <el-tabs type="border-card" style="margin-right: 40px">
+        <el-tabs type="border-card" style="margin-right: 40px" @tab-click="tabClick">
           <el-tab-pane label="菜单权限">
             <div>
-              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
+              <div v-for=" (menu,_index) in allMenuPermission" :key="menu.menuName">
             <span style="width: 100px;display: inline-block;">
               <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
                          style="width:80px;"
@@ -99,10 +99,10 @@
             </el-table>
           </el-tab-pane>
         </el-tabs>
-
-
       </el-form>
-      <div slot="footer" class="dialog-footer">
+
+
+      <div slot="footer" class="dialog-footer" v-if="dialogFooterVisible">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="success" @click="createRole">创 建</el-button>
         <el-button type="primary" v-else @click="updateRole">修 改</el-button>
@@ -121,11 +121,12 @@
         <el-tabs type="border-card" style="margin-right: 40px">
           <el-tab-pane label="文件管理权限">
             <div>
-              <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
-                <span style="width: 100px;display: inline-block;">
-                  <el-button :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')" size="mini"
-                             style="width:80px;"
-                             @click="checkAll(_index)">{{menu.menuName}}
+              <div v-for=" (menu,_index) in allDataPermission" :key="menu.menuName">
+                <span style="display: inline-block;">
+                  <el-button
+                    :type="isDataPermissionMenuNone(_index)?'':(isDataPermissionAll(_index)?'success':'primary')"
+                    size="large"
+                    @click="checkAll(_index,tempRole.permissionType.dataType)">{{menu.menuName}}
                   </el-button>
                 </span>
                 <div style="display: inline-block;margin-left:20px;">
@@ -141,20 +142,6 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="整理编目权限">
-            <el-table :data="fondList"
-                      v-loading.body="listLoading"
-                      element-loading-text="拼命加载中" border fit
-                      highlight-current-row>
-              <el-table-column align="center" prop="id" label="全宗号">
-              </el-table-column>
-              <el-table-column align="center" prop="fondName" label="全宗名"></el-table-column>
-              <el-table-column align="center" label="操作权限" width="200" v-if="hasPerm('fond:update')">
-                <template slot-scope="scope">
-                  <el-button type="primary" icon="edit" @click="showFondRoleUpdate(scope.$index)">数据权限</el-button>
-                  <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
           </el-tab-pane>
           <el-tab-pane label="储藏室权限">
 
@@ -167,7 +154,7 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="dialogFondFormVisible = false">取 消</el-button>
         <el-button v-if="dialogStatus=='create'" type="success" @click="createRole">创 建</el-button>
         <el-button type="primary" v-else @click="updateRole">修 改</el-button>
       </div>
@@ -184,13 +171,16 @@
       return {
         list: [],//表格的数据
         fondList: [],//全宗列表
-        allPermission: [],
+        allMenuPermission: [],
+        allDataPermission: [],
         listLoading: false,//数据加载等待动画
         dialogStatus: 'create',
         dialogFormVisible: false,
 
         dialogFondStatus: 'create',
         dialogFondFormVisible: false,
+
+        dialogFooterVisible: true,
         textMap: {
           update: '编辑',
           create: '新建角色'
@@ -199,6 +189,10 @@
           roleName: '',
           roleId: '',
           permissions: [],
+          permissionType: {
+            menuType: "1",
+            dataType: "2"
+          }
         },
         adminName: '管理员'
       }
@@ -209,13 +203,27 @@
       this.getAllPermisson();
     },
     methods: {
+      tabClick(_tab){
+        if (_tab.index == "1") {
+          this.dialogFooterVisible = false;
+        } else {
+          this.dialogFooterVisible = true;
+        }
+      },
       getAllPermisson() {
         //查询所有权限
         this.api({
           url: "/user/listAllPermission",
           method: "get"
         }).then(data => {
-          this.allPermission = data.list;
+          //菜单权限与数据权限区分对待
+          for (var value of data.list) {
+            if (value.permissionType == "1") {
+              this.allMenuPermission.push(value);
+            } else {
+              this.allDataPermission.push(value);
+            }
+          }
         })
       },
       getList() {
@@ -229,8 +237,10 @@
           this.list = data.list;
         })
       },
+
+
       getFondList() {
-        //查询列表
+        //全宗查询列表
         this.listLoading = true;
         this.api({
           url: "/fond/listFond",
@@ -280,7 +290,7 @@
 //          }
 //        }
         this.dialogFondStatus = "update";
-        this.dialogFondFormVisible = true
+        this.dialogFondFormVisible = true;
       },
 
 
@@ -308,6 +318,7 @@
         if (!this.checkPermissionNum()) {
           return;
         }
+
         //修改角色
         this.api({
           url: "/user/updateRole",
@@ -315,7 +326,13 @@
           data: this.tempRole
         }).then(() => {
           this.getList();
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
+          this.dialogFondFormVisible = false;
+          this.$confirm('修改权限成功', '提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            type: 'warning'
+          })
         })
       },
       checkPermissionNum() {
@@ -366,7 +383,7 @@
       },
       isMenuNone(_index) {
         //判断本级菜单内的权限是否一个都没选
-        let menu = this.allPermission[_index].permissions;
+        let menu = this.allMenuPermission[_index].permissions;
         let result = true;
         for (let j = 0; j < menu.length; j++) {
           if (this.tempRole.permissions.indexOf(menu[j].id) > -1) {
@@ -376,9 +393,48 @@
         }
         return result;
       },
+
+
+      isDataPermissionMenuNone(_index) {
+        //判断本级菜单内的权限是否一个都没选
+        let permissions = this.allDataPermission[_index].permissions;
+        let result = true;
+        for (let j = 0; j < permissions.length; j++) {
+          if (this.tempRole.permissions.indexOf(permissions[j].id) > -1) {
+            result = false;
+            break;
+          }
+        }
+        return result;
+      },
+      isDataPermissionAll(_index){
+        //判断本级菜单内的权限是否全选了
+        let dataPermissions = this.allDataPermission[_index].permissions;
+        let result = true;
+        for (let j = 0; j < dataPermissions.length; j++) {
+          if (this.tempRole.permissions.indexOf(dataPermissions[j].id) < 0) {
+            result = false;
+            break;
+          }
+        }
+        return result;
+      },
+
+      checkDataPermissionAll(_index){
+        //点击菜单   相当于全选按钮
+        let v = this;
+        if (v.isDataPermissionAll(_index)) {
+          //如果已经全选了,则全部取消
+          v.noPerm(_index);
+        } else {
+          //如果尚未全选,则全选
+          v.allPerm(_index);
+        }
+      },
+
       isMenuAll(_index) {
         //判断本级菜单内的权限是否全选了
-        let menu = this.allPermission[_index].permissions;
+        let menu = this.allMenuPermission[_index].permissions;
         let result = true;
         for (let j = 0; j < menu.length; j++) {
           if (this.tempRole.permissions.indexOf(menu[j].id) < 0) {
@@ -388,31 +444,62 @@
         }
         return result;
       },
-      checkAll(_index) {
+      checkAll(_index, ptype) {
         //点击菜单   相当于全选按钮
         let v = this;
-        if (v.isMenuAll(_index)) {
-          //如果已经全选了,则全部取消
-          v.noPerm(_index);
+        debugger;
+        if (ptype == this.tempRole.permissionType.dataType) {
+          if (v.isDataPermissionAll(_index)) {
+            //如果已经全选了,则全部取消
+            v.noPerm(_index, ptype);
+          } else {
+            //如果尚未全选,则全选
+            v.allPerm(_index, ptype);
+          }
         } else {
-          //如果尚未全选,则全选
-          v.allPerm(_index);
+          //菜单权限
+          if (v.isMenuAll(_index)) {
+            //如果已经全选了,则全部取消
+            v.noPerm(_index);
+          } else {
+            //如果尚未全选,则全选
+            v.allPerm(_index);
+          }
         }
       },
-      allPerm(_index) {
-        //全部选中
-        let menu = this.allPermission[_index].permissions;
-        for (let j = 0; j < menu.length; j++) {
-          this.addUnique(menu[j].id, this.tempRole.permissions)
+      allPerm(_index, _ptype) {
+        if (_ptype == this.tempRole.permissionType.dataType) {
+          //全部选中
+          let permissions = this.allDataPermission[_index].permissions;
+          for (let j = 0; j < permissions.length; j++) {
+            this.addUnique(permissions[j].id, this.tempRole.permissions)
+          }
+        } else {
+          //全部选中
+          let menu = this.allMenuPermission[_index].permissions;
+          for (let j = 0; j < menu.length; j++) {
+            this.addUnique(menu[j].id, this.tempRole.permissions)
+          }
         }
       },
-      noPerm(_index) {
-        //全部取消选中
-        let menu = this.allPermission[_index].permissions;
-        for (let j = 0; j < menu.length; j++) {
-          let idIndex = this.tempRole.permissions.indexOf(menu[j].id);
-          if (idIndex > -1) {
-            this.tempRole.permissions.splice(idIndex, 1);
+      noPerm(_index, _ptype) {
+        if (_ptype == this.tempRole.permissionType.dataType) {
+          //全部取消选中
+          let permissions = this.allDataPermission[_index].permissions;
+          for (let j = 0; j < permissions.length; j++) {
+            let idIndex = this.tempRole.permissions.indexOf(permissions[j].id);
+            if (idIndex > -1) {
+              this.tempRole.permissions.splice(idIndex, 1);
+            }
+          }
+        } else {
+          //全部取消选中
+          let menu = this.allMenuPermission[_index].permissions;
+          for (let j = 0; j < menu.length; j++) {
+            let idIndex = this.tempRole.permissions.indexOf(menu[j].id);
+            if (idIndex > -1) {
+              this.tempRole.permissions.splice(idIndex, 1);
+            }
           }
         }
       },
@@ -442,7 +529,7 @@
       },
       makeReuqiredPermissionChecked(_index) {
         //将本菜单必选的权限勾上
-        let menu = this.allPermission[_index].permissions;
+        let menu = this.allMenuPermission[_index].permissions;
         for (let j = 0; j < menu.length; j++) {
           let perm = menu[j];
           if (perm.requiredPerm === 1) {

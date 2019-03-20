@@ -12,6 +12,7 @@ public class Permission extends BaseEntity {
     private String permissionCode;
     private String permissionName;
     private int requiredPermission;
+    private int permissionType;
 
     public String getMenuCode() {
         return menuCode;
@@ -51,5 +52,13 @@ public class Permission extends BaseEntity {
 
     public void setRequiredPermission(int requiredPermission) {
         this.requiredPermission = requiredPermission;
+    }
+
+    public int getPermissionType() {
+        return permissionType;
+    }
+
+    public void setPermissionType(int permissionType) {
+        this.permissionType = permissionType;
     }
 }
