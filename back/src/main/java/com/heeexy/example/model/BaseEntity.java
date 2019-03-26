@@ -6,13 +6,18 @@ import javax.persistence.*;
  * Created by lh on 2019-3-13.
  */
 public class BaseEntity {
+
+    public  static final String DELETE = "delete";
+    public  static final String UPDATE = "update";
+    public  static final String ADD = "add";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Transient
-    private Integer oldId;//修改之前的id值，用来更新使用
+    private String entityStatus;
 
     @Transient
     private Integer pageNum = 1;
@@ -44,11 +49,12 @@ public class BaseEntity {
         this.pageRow = pageRow;
     }
 
-    public Integer getOldId() {
-        return oldId;
+
+    public String getEntityStatus() {
+        return entityStatus;
     }
 
-    public void setOldId(Integer oldId) {
-        this.oldId = oldId;
+    public void setEntityStatus(String entityStatus) {
+        this.entityStatus = entityStatus;
     }
 }

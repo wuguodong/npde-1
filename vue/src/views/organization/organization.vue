@@ -136,6 +136,7 @@
       showCreate() {
         //显示新增对话框
         this.tempOrganization.name = "";
+        this.tempOrganization.principal = "";
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },

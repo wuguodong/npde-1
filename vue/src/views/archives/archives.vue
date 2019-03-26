@@ -15,12 +15,13 @@
             </el-select>
           </template>
           <el-button type="primary" style="float: right" icon="el-icon-circle-plus" @click="showCreate"
-                     v-if="hasPerm('blog:add')">添加档案库类别
+                     v-if="hasPerm('archiveRoom:add')">添加档案库类别
           </el-button>
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
+    <el-table :data="list" v-loading.body="listLoading" @row-click="tableSelect"
+              element-loading-text="拼命加载中" border fit
               highlight-current-row>
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">
@@ -30,7 +31,7 @@
       <el-table-column align="center" prop="content" label="名称" style="width: 60px;">
         <template slot-scope="scope">
           <a style="color: darkblue">
-            <router-link to="archives/addarchive">{{scope.row.content}}</router-link>
+            <router-link v-on:click.native="getList(scope.row.id)" to="">{{scope.row.content}}</router-link>
           </a>
         </template>
       </el-table-column>
@@ -40,10 +41,15 @@
           <span>{{scope.row.createTime}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('blog:update')">
+      <el-table-column align="center" label="管理" width="200"
+                       v-if="hasPerm('archiveRoom:update') || hasPerm('archiveRoom:delete')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
-          <el-button type="danger" icon="delete" @click="removeArchive(scope.$index)">删除</el-button>
+          <el-button type="primary" icon="edit" v-if="hasPerm('archiveRoom:update')" @click="showUpdate(scope.$index)">
+            修改
+          </el-button>
+          <el-button type="danger" icon="delete" v-if="hasPerm('archiveRoom:delete')"
+                     @click="removeArchive(scope.$index)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,7 +72,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="success" @click="createArticle">创 建</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createArticle">添 加</el-button>
         <el-button type="primary" v-else @click="updateArticle">修 改</el-button>
       </div>
     </el-dialog>
@@ -82,7 +88,8 @@
         listQuery: {
           pageNum: 1,//页码
           pageRow: 50,//每页条数
-          name: ''
+          name: '',
+          parentId: ""
         },
         dialogStatus: 'create',
         dialogFormVisible: false,
@@ -92,7 +99,8 @@
         },
         tempArticle: {
           id: "",
-          content: ""
+          content: "",
+          parentId: ""
         },
         archivesTypesOptions: [{
           label: "全部",
@@ -108,14 +116,17 @@
       this.getList();
     },
     methods: {
-      getList() {
+      //_parentId  为档案库目录的父档案库ID
+      getList(_parentId) {
+        debugger;
         //查询列表
-        if (!this.hasPerm('blog:list')) {
+        if (!this.hasPerm('archiveRoom:list')) {
           return
         }
         this.listLoading = true;
+        this.listQuery.parentId = _parentId;
         this.api({
-          url: "/blog/listArticle",
+          url: "/archiveRoom/listArchiveRoom",
           method: "get",
           params: this.listQuery
         }).then(data => {
@@ -151,10 +162,14 @@
         this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
+      tableSelect($row){
+        debugger;
+        this.tempArticle.parentId = $row.id;
+      },
       createArticle() {
-        //保存新文章
+        //保存档案库
         this.api({
-          url: "/blog/addArticle",
+          url: "/archiveRoom/addArchiveRoom",
           method: "post",
           data: this.tempArticle
         }).then(() => {
@@ -165,7 +180,7 @@
       updateArticle() {
         //修改文章
         this.api({
-          url: "/blog/updateArticle",
+          url: "/archiveRoom/updateArchiveRoom",
           method: "post",
           data: this.tempArticle
         }).then(() => {
@@ -180,12 +195,12 @@
           showCancelButton: false,
           type: 'warning'
         }).then(() => {
-          let user = _vue.list[$index];
-          user.deleteStatus = '2';
+          let archiveRoom = _vue.list[$index];
+          archiveRoom.entityStatus = "delete";
           _vue.api({
-            url: "/user/updateUser",
+            url: "/archiveRoom/deleteArchiveRoom",
             method: "post",
-            data: user
+            data: archiveRoom
           }).then(() => {
             _vue.getList()
           }).catch(() => {
@@ -196,3 +211,8 @@
     }
   }
 </script>
+<style scoped>
+  .el-table__body tr.current-row > td {
+    background: #4e8ff5 !important;
+  }
+</style>

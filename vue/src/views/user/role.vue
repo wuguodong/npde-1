@@ -138,7 +138,6 @@
                   </el-checkbox-group>
                 </div>
               </div>
-              <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
             </div>
           </el-tab-pane>
           <el-tab-pane label="整理编目权限">

@@ -169,7 +169,7 @@
         this.tempUser.nickname = "";
         this.tempUser.roleId = "";
         this.tempUser.userId = "";
-        this.dialogStatus = "create"
+        this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
       showUpdate($index) {
@@ -180,7 +180,7 @@
         this.tempUser.userId = user.userId;
         this.tempUser.deleteStatus = '1';
         this.tempUser.password = '';
-        this.dialogStatus = "update"
+        this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
       createUser() {

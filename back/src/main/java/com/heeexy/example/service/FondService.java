@@ -1,6 +1,7 @@
 package com.heeexy.example.service;
 
 import com.github.pagehelper.PageHelper;
+import com.heeexy.example.model.BaseEntity;
 import com.heeexy.example.model.Fond;
 import com.heeexy.example.mapper.FondMapper;
 import com.heeexy.example.model.User;
@@ -34,15 +35,12 @@ public class FondService {
     }
 
     public void save(Fond fond) {
-        if (fond.getId() != null) {
-            Fond f = fondMapper.selectByPrimaryKey(fond.getOldId());
-            if (null != f) {
-                fondMapper.updateByPrimaryKey(fond);
-            } else {
-                fondMapper.insert(fond);
-            }
-        } else {
+        if (fond.getEntityStatus() == BaseEntity.ADD) {
             fondMapper.insert(fond);
+        } else if (fond.getEntityStatus() == BaseEntity.UPDATE) {
+            fondMapper.updateByPrimaryKey(fond);
+        } else if (fond.getEntityStatus() == BaseEntity.DELETE) {
+            fondMapper.deleteByPrimaryKey(fond.getId());
         }
     }
 

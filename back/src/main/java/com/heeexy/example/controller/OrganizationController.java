@@ -2,6 +2,7 @@ package com.heeexy.example.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.heeexy.example.model.BaseEntity;
 import com.heeexy.example.model.Organization;
 import com.heeexy.example.service.OrganizationService;
 import com.heeexy.example.util.CommonUtil;
@@ -48,6 +49,7 @@ public class OrganizationController {
     @RequiresPermissions("organization:add")
     @PostMapping("/addOrganization")
     public JSONObject addOrganization(@RequestBody Organization organization) {
+        organization.setEntityStatus(BaseEntity.ADD);
         organizationService.save(organization);
         return CommonUtil.successJson(organization);
     }
@@ -58,6 +60,7 @@ public class OrganizationController {
     @RequiresPermissions("organization:update")
     @PostMapping("/updateOrganization")
     public JSONObject updateOrganization(@RequestBody Organization organization) {
+        organization.setEntityStatus(BaseEntity.UPDATE);
         organizationService.save(organization);
         return CommonUtil.successJson(organization);
     }
@@ -68,7 +71,8 @@ public class OrganizationController {
     @RequiresPermissions("organization:delete")
     @PostMapping("/deleteOrganization")
     public JSONObject deleteOrganization(@RequestBody Organization organization) {
-        organizationService.deleteById(organization.getId());
+        organization.setEntityStatus(BaseEntity.DELETE);
+        organizationService.save(organization);
         return CommonUtil.successJson(organization);
     }
 }

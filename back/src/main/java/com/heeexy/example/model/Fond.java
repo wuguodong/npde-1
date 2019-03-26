@@ -2,6 +2,7 @@ package com.heeexy.example.model;
 
 /**
  * Created by lh on 2019-3-13.
+ * 全宗实体
  */
 public class Fond extends BaseEntity {
     private String fondName;

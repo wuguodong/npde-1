@@ -2,6 +2,7 @@ package com.heeexy.example.service;
 
 import com.github.pagehelper.PageHelper;
 import com.heeexy.example.mapper.OrganizationMapper;
+import com.heeexy.example.model.BaseEntity;
 import com.heeexy.example.model.Fond;
 import com.heeexy.example.model.Organization;
 import com.heeexy.example.model.User;
@@ -30,20 +31,14 @@ public class OrganizationService {
         return organizationMapper.selectByPrimaryKey(id);
     }
 
-    public void deleteById(Integer id) {
-        organizationMapper.deleteByPrimaryKey(id);
-    }
 
     public void save(Organization organization) {
-        if (organization.getId() != null) {
-            Organization o = organizationMapper.selectByPrimaryKey(organization.getOldId());
-            if (null != o) {
-                organizationMapper.updateByPrimaryKey(organization);
-            } else {
-                organizationMapper.insert(organization);
-            }
-        } else {
+        if (organization.getEntityStatus() == BaseEntity.ADD) {
             organizationMapper.insert(organization);
+        } else if (organization.getEntityStatus() == BaseEntity.UPDATE) {
+            organizationMapper.updateByPrimaryKey(organization);
+        } else if (organization.getEntityStatus() == BaseEntity.DELETE) {
+            organizationMapper.deleteByPrimaryKey(organization.getId());
         }
     }
 }
