@@ -38,7 +38,7 @@ function filterAsyncRouter(asyncRouterMap, menus) {
   return accessedRouters
 }
 
-const permission = {
+const permission2 = {
   state: {
     routers: constantRouterMap, //本用户所有的路由,包括了固定的路由和下面的addRouters
     addRouters: [] //本用户的角色赋予的新增的动态路由
@@ -60,6 +60,7 @@ const permission = {
         //roles是后台传过来的角色数组,比如['管理员','文章']
         const role = userPermission.roleName;
         const menus = userPermission.menuList;
+        const fonds = userPermission.fondsList
         //声明 该角色可用的路由
         let accessedRouters;
         if (role === '管理员') {
@@ -77,4 +78,4 @@ const permission = {
     }
   }
 };
-export default permission
+export default permission2

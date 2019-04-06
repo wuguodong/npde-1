@@ -10,7 +10,6 @@ import '@/icons' // icon
 import '@/permission' // 权限
 import {default as api} from './utils/api'
 import {hasPermission} from "./utils/hasPermission";
-
 Vue.use(ElementUI, {locale});
 Vue.prototype.api = api;
 

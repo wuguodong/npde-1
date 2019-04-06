@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import api from '@/utils/api'
+
 // in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
 /* layout */
 import Layout from '../views/layout/Layout'
@@ -78,7 +79,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'blog',
-        name: '文章',
+        name: '文件管理',
         component: _import('article/article'),
         meta: {title: '文件管理', icon: 'example'},
         menu: 'blog'

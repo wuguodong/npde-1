@@ -118,7 +118,6 @@
     methods: {
       //_parentId  为档案库目录的父档案库ID
       getList(_parentId) {
-        debugger;
         //查询列表
         if (!this.hasPerm('archiveRoom:list')) {
           return
@@ -163,7 +162,6 @@
         this.dialogFormVisible = true
       },
       tableSelect($row){
-        debugger;
         this.tempArticle.parentId = $row.id;
       },
       createArticle() {

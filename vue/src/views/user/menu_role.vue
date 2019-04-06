@@ -83,9 +83,21 @@
 
           </el-tab-pane>
           <el-tab-pane label="全宗权限">
-            <fondrole></fondrole>
+            <el-table :data="fondList"
+                      v-loading.body="listLoading"
+                      element-loading-text="拼命加载中" border fit
+                      highlight-current-row>
+              <el-table-column align="center" prop="id" label="全宗号" width="80">
+              </el-table-column>
+              <el-table-column align="center" prop="fondName" label="全宗名" width="200"></el-table-column>
+              <el-table-column align="center" label="操作权限" v-if="hasPerm('fond:update')">
+                <template slot-scope="scope">
+                  <el-button type="primary" icon="edit" @click="showFondRoleUpdate(scope.$index)">数据权限</el-button>
+                  <el-button type="danger" icon="delete" @click="removeFond(scope.$index)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
-
         </el-tabs>
       </el-form>
 
@@ -97,13 +109,60 @@
       </div>
     </el-dialog>
 
+    <!--全宗数据权限弹出对话框-->
+    <el-dialog :title="textMap[dialogFondStatus]" :visible.sync="dialogFondFormVisible">
+      <el-form class="small-space" :model="tempRole" label-position="left" label-width="100px"
+               style='width: 600px; margin-left:50px;'>
+        <el-form-item label="角色名称" required>
+          <el-input type="text" v-model="tempRole.roleName" style="width: 250px;">
+          </el-input>
+        </el-form-item>
+
+        <el-tabs type="border-card" style="margin-right: 40px">
+          <el-tab-pane label="文件管理权限">
+            <div>
+              <div v-for=" (menu,_index) in allDataPermission" :key="menu.menuName">
+                <span style="display: inline-block;">
+                  <el-button
+                    :type="isDataPermissionMenuNone(_index)?'':(isDataPermissionAll(_index)?'success':'primary')"
+                    size="large"
+                    @click="checkAll(_index,tempRole.permissionType.dataType)">{{menu.menuName}}
+                  </el-button>
+                </span>
+                <div style="display: inline-block;margin-left:20px;">
+                  <el-checkbox-group v-model="tempRole.permissions">
+                    <el-checkbox v-for="perm in menu.permissions" :label="perm.id" @change="checkRequired(perm,_index)"
+                                 :key="perm.id">
+                      <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </div>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="整理编目权限">
+          </el-tab-pane>
+          <el-tab-pane label="储藏室权限">
+
+          </el-tab-pane>
+          <el-tab-pane label="库房权限">
+
+          </el-tab-pane>
+        </el-tabs>
+
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFondFormVisible = false">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="success" @click="createRole">创 建</el-button>
+        <el-button type="primary" v-else @click="updateRole">修 改</el-button>
+      </div>
+    </el-dialog>
+
 
   </div>
 </template>
 <script>
-  import Vue from 'vue'
-  import fondrole from './fondrole.vue';
-  Vue.component("fondrole", fondrole);
   export default {
     data() {
       return {

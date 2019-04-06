@@ -38,7 +38,9 @@ public class PermissionService {
 			//查询所有菜单  所有权限
 			Set<String> menuList = permissionMapper.getAllMenu();
 			Set<String> permissionList = permissionMapper.getAllPermission();
+			//Set<String> fondsList = permissionMapper.getAllPermission();
 			userPermission.put("menuList", menuList);
+			//userPermission.put("fondsList", fondsList);
 			userPermission.put("permissionList", permissionList);
 		}
 		return userPermission;
