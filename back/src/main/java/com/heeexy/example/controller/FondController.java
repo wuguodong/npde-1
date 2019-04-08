@@ -3,7 +3,9 @@ package com.heeexy.example.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.heeexy.example.model.Fond;
+import com.heeexy.example.model.FondPermission;
 import com.heeexy.example.model.User;
+import com.heeexy.example.service.FondPermissionService;
 import com.heeexy.example.service.FondService;
 import com.heeexy.example.util.CommonUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,6 +26,9 @@ public class FondController {
     @Autowired
     private FondService fondService;
 
+    @Autowired
+    FondPermissionService fondPermissionService;
+
     /**
      * 查询全宗列表
      */
@@ -31,8 +36,19 @@ public class FondController {
     @GetMapping("/listFond")
     public JSONObject getAll(Fond fond) {
         List<Fond> fondList = fondService.getAll(fond);
-        PageInfo<Fond> fondPageInfo = new PageInfo<Fond>(fondList);
+        PageInfo<Fond> fondPageInfo = new PageInfo<>(fondList);
         return CommonUtil.successJson(fondPageInfo);
+    }
+
+
+    /**
+     * 查询全宗列表
+     */
+    @RequiresPermissions("role:list")
+    @PostMapping("/listFondPermission")
+    public JSONObject getFondPermissionWithRole(@RequestBody FondPermission fondPermission) {
+        List<FondPermission> fondPermissionList = fondPermissionService.selectFondsByRole(fondPermission);
+        return CommonUtil.successJson(fondPermissionList);
     }
 
     /**
@@ -42,7 +58,7 @@ public class FondController {
     @GetMapping("/listUserFond")
     public JSONObject getUserFond(User user) {
         List<Fond> fondList = fondService.selectFondsByUser(user);
-        PageInfo<Fond> fondPageInfo = new PageInfo<Fond>(fondList);
+        PageInfo<Fond> fondPageInfo = new PageInfo<>(fondList);
         return CommonUtil.successJson(fondPageInfo);
     }
 
@@ -64,6 +80,17 @@ public class FondController {
     public JSONObject updateFond(@RequestBody Fond fond) {
         fondService.save(fond);
         return CommonUtil.successJson(fond);
+    }
+
+
+    /**
+     * 修改某个角色对某个具体全宗的操作权限
+     */
+    @RequiresPermissions("role:update")
+    @PostMapping("/updateFondDataRole")
+    public JSONObject updateFondDataRole(@RequestBody List<FondPermission> fondPermissionList) {
+        fondPermissionService.updateFondDataRole(fondPermissionList);
+        return CommonUtil.successJson(fondPermissionList);
     }
 
     /**

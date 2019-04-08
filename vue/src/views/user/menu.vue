@@ -19,7 +19,7 @@
       <el-table-column align="center" label="用户名" prop="username" style="width: 60px;"></el-table-column>
       <el-table-column align="center" label="角色" width="100">
         <template slot-scope="scope">
-          <el-tag type="success" v-text="scope.row.roleName" v-if="scope.row.roleId===1"></el-tag>
+          <el-tag type="success" v-text="scope.row.roleName" v-if="scope.row.fondId===1"></el-tag>
           <el-tag type="primary" v-text="scope.row.roleName" v-else></el-tag>
         </template>
       </el-table-column>
@@ -59,12 +59,12 @@
           </el-input>
         </el-form-item>
         <el-form-item label="角色" required>
-          <el-select v-model="tempUser.roleId" placeholder="请选择">
+          <el-select v-model="tempUser.fondId" placeholder="请选择">
             <el-option
               v-for="item in roles"
-              :key="item.roleId"
+              :key="item.fondId"
               :label="item.roleName"
-              :value="item.roleId">
+              :value="item.fondId">
             </el-option>
           </el-select>
         </el-form-item>
@@ -105,7 +105,7 @@
           username: '',
           password: '',
           nickname: '',
-          roleId: '',
+          fondId: '',
           userId: ''
         }
       }
@@ -167,7 +167,7 @@
         this.tempUser.username = "";
         this.tempUser.password = "";
         this.tempUser.nickname = "";
-        this.tempUser.roleId = "";
+        this.tempUser.fondId = "";
         this.tempUser.userId = "";
         this.dialogStatus = "create";
         this.dialogFormVisible = true
@@ -176,7 +176,7 @@
         let user = this.list[$index];
         this.tempUser.username = user.username;
         this.tempUser.nickname = user.nickname;
-        this.tempUser.roleId = user.roleId;
+        this.tempUser.fondId = user.fondId;
         this.tempUser.userId = user.userId;
         this.tempUser.deleteStatus = '1';
         this.tempUser.password = '';

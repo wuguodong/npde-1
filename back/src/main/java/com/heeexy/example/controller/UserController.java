@@ -82,7 +82,7 @@ public class UserController {
 	 * 修改角色
 	 */
 	@RequiresPermissions("role:update")
-	@PostMapping("/updateRole")
+	@PostMapping("/updateMenuRole")
 	public JSONObject updateRole(@RequestBody JSONObject requestJson) {
 		CommonUtil.hasAllRequired(requestJson, "roleId,roleName,permissions");
 		return userService.updateRole(requestJson);

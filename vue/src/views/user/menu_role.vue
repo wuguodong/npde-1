@@ -184,7 +184,7 @@
         },
         tempRole: {
           roleName: '',
-          roleId: '',
+          fondId: '',
           permissions: [],
           permissionType: {
             menuType: "1",
@@ -254,7 +254,7 @@
       showCreate() {
         //显示新增对话框
         this.tempRole.roleName = '';
-        this.tempRole.roleId = '';
+        this.tempRole.fondId = '';
         this.tempRole.permissions = [];
         this.dialogStatus = "create";
         this.dialogFormVisible = true
@@ -262,7 +262,7 @@
       showUpdate($index) {
         let role = this.list[$index];
         this.tempRole.roleName = role.roleName;
-        this.tempRole.roleId = role.roleId;
+        this.tempRole.fondId = role.fondId;
         this.tempRole.permissions = [];
         for (let i = 0; i < role.menus.length; i++) {
           let perm = role.menus[i].permissions;
@@ -278,7 +278,7 @@
       showFondRoleUpdate($index) {
 //        let role = this.list[$index];
 //        this.tempRole.roleName = role.roleName;
-//        this.tempRole.roleId = role.roleId;
+//        this.tempRole.fondId = role.fondId;
 //        this.tempRole.permissions = [];
 //        for (let i = 0; i < role.menus.length; i++) {
 //          let perm = role.menus[i].permissions;
@@ -309,7 +309,7 @@
         })
       },
       updateRole() {
-        if (!this.checkRoleNameUnique(this.tempRole.roleId)) {
+        if (!this.checkRoleNameUnique(this.tempRole.fondId)) {
           return;
         }
         if (!this.checkPermissionNum()) {
@@ -340,7 +340,7 @@
         }
         return true;
       },
-      checkRoleNameUnique(roleId) {
+      checkRoleNameUnique(fondId) {
         //校验名称重复
         let roleName = this.tempRole.roleName;
         if (!roleName) {
@@ -350,7 +350,7 @@
         let roles = this.list;
         let result = true;
         for (let j = 0; j < roles.length; j++) {
-          if (roles[j].roleName === roleName && (!roleId || roles[j].roleId !== roleId  )) {
+          if (roles[j].roleName === roleName && (!fondId || roles[j].fondId !== fondId  )) {
             this.$message.error("角色名称已存在");
             result = false;
             break;
@@ -370,7 +370,7 @@
             url: "/user/deleteRole",
             method: "post",
             data: {
-              roleId: role.roleId
+              fondId: role.fondId
             }
           }).then(() => {
             _vue.getList()
