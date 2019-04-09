@@ -16,13 +16,13 @@
     </el-table>
 
     <!--全宗数据权限弹出对话框-->
-    <el-dialog :title="textMap['update']" :visible.sync="dialogFondFormVisible">
+    <el-dialog :title="textMap['update']" :visible.sync="dialogFondFormVisible" append-to-body @open="dialogOpen">
       <el-form class="small-space" :model="fondRole" label-position="left" label-width="100px"
                style='width: 600px; margin-left:50px;'>
         <el-tabs type="border-card" style="margin-right: 40px">
           <el-tab-pane label="文件管理权限">
             <div>
-              <div v-for=" (menu,_index) in alldatapermission" :key="menu.menuName">
+              <div v-for=" (menu,_index) in this.alldatapermission" :key="menu.menuName">
                 <span style="display: inline-block;">
                   <!--<el-button-->
                   <!--:type="isDataPermissionMenuNone(_index)?'':(isDataPermissionAll(_index)?'success':'primary')"-->
@@ -79,8 +79,8 @@
         fondRole: {
           roleName: '',
           roleId: '',
-//          fondItemsPermissionList: ['801', '802', '803', '804', '805'],//条目操作权限
-          fondItemsPermissionList: [],//条目操作权限
+          fondItemsPermissionList: ['801', '802', '803', '804', '805'],//条目操作权限
+//          fondItemsPermissionList: [],//条目操作权限
           fondAssessPermissionList: [],//原文访问权限
           fondOperationPermissionList: [],//原文操作权限
         },
@@ -100,9 +100,11 @@
         }
       }
     },
+
     created() {
       this.getFondList();
     },
+
     methods: {
       getFondList() {
         //全宗查询列表
@@ -115,23 +117,26 @@
           this.fondList = data.list;
         })
       },
+      dialogOpen(){
+          debugger;
+      },
 
       getFondPermissonList() {
-        this.fondRole.fondItemsPermissionList = [];
-        //查询列表
-        this.listLoading = true;
-        if (this.fondPermission.fondId !== null && this.fondPermission.fondId !== '') {
-          this.api({
-            url: "/fond/listFondPermission",
-            method: "post",
-            data: this.fondPermission
-          }).then(data => {
-            this.listLoading = false;
-            data.forEach(function (value) {
-              this.fondRole.fondItemsPermissionList.push(value.permissionId);
-            }, this);
-          })
-        }
+//        this.fondRole.fondItemsPermissionList = [];
+//        //查询列表
+//        this.listLoading = true;
+//        if (this.fondPermission.fondId !== null && this.fondPermission.fondId !== '') {
+//          this.api({
+//            url: "/fond/listFondPermission",
+//            method: "post",
+//            data: this.fondPermission
+//          }).then(data => {
+//            this.listLoading = false;
+//            data.forEach(function (value) {
+////              this.fondRole.fondItemsPermissionList.push(value.permissionId);
+//            }, this);
+//          })
+//        }
       },
 
 
