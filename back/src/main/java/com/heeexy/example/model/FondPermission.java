@@ -1,5 +1,6 @@
 package com.heeexy.example.model;
 
+
 import java.sql.Timestamp;
 
 /**
@@ -29,6 +30,14 @@ public class FondPermission extends BaseEntity {
 
     public void setPermissionId(String permissionId) {
         this.permissionId = permissionId;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
     public Timestamp getCreateTime() {
@@ -61,13 +70,5 @@ public class FondPermission extends BaseEntity {
 
     public void setFondId(String fondId) {
         this.fondId = fondId;
-    }
-
-    public String getPermissionName() {
-        return permissionName;
-    }
-
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
     }
 }

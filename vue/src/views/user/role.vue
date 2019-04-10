@@ -74,7 +74,7 @@
                     <el-checkbox v-for="perm in menu.permissions"
                                  :label="perm.id"
                                  :key="perm.id"
-                                 @change="checkRequired(perm,_index)">
+                                 @change="checkMenuPermissionRequired(perm,_index)">
                       <span :class="{requiredPerm:perm.requiredPerm===1}">{{perm.permissionName}}</span>
                     </el-checkbox>
                   </el-checkbox-group>
@@ -304,43 +304,6 @@
       },
 
 
-      isDataPermissionMenuNone(_index) {
-        //判断本级菜单内的权限是否一个都没选
-        let permissions = this.alldatapermission[_index].permissions;
-        let result = true;
-        for (let j = 0; j < permissions.length; j++) {
-          if (this.tempRole.permissions.indexOf(permissions[j].id) > -1) {
-            result = false;
-            break;
-          }
-        }
-        return result;
-      },
-      isDataPermissionAll(_index){
-        //判断本级菜单内的权限是否全选了
-        let dataPermissions = this.alldatapermission[_index].permissions;
-        let result = true;
-        for (let j = 0; j < dataPermissions.length; j++) {
-          if (this.tempRole.permissions.indexOf(dataPermissions[j].id) < 0) {
-            result = false;
-            break;
-          }
-        }
-        return result;
-      },
-
-      checkDataPermissionAll(_index){
-        //点击菜单   相当于全选按钮
-        let v = this;
-        if (v.isDataPermissionAll(_index)) {
-          //如果已经全选了,则全部取消
-          v.noPerm(_index);
-        } else {
-          //如果尚未全选,则全选
-          v.allPerm(_index);
-        }
-      },
-
       isMenuAll(_index) {
         //判断本级菜单内的权限是否全选了
         let menu = this.allmenupermission[_index].permissions;
@@ -353,26 +316,16 @@
         }
         return result;
       },
-      checkAll(_index, ptype) {
+      checkAll(_index) {
         //点击菜单   相当于全选按钮
         let v = this;
-        if (ptype == this.tempRole.permissionType.dataType) {
-          if (v.isDataPermissionAll(_index)) {
-            //如果已经全选了,则全部取消
-            v.noPerm(_index, ptype);
-          } else {
-            //如果尚未全选,则全选
-            v.allPerm(_index, ptype);
-          }
+        //菜单权限
+        if (v.isMenuAll(_index)) {
+          //如果已经全选了,则全部取消
+          v.noPerm(_index);
         } else {
-          //菜单权限
-          if (v.isMenuAll(_index)) {
-            //如果已经全选了,则全部取消
-            v.noPerm(_index);
-          } else {
-            //如果尚未全选,则全选
-            v.allPerm(_index);
-          }
+          //如果尚未全选,则全选
+          v.allPerm(_index);
         }
       },
       allPerm(_index, _ptype) {
@@ -390,24 +343,13 @@
           }
         }
       },
-      noPerm(_index, _ptype) {
-        if (_ptype == this.tempRole.permissionType.dataType) {
-          //全部取消选中
-          let permissions = this.alldatapermission[_index].permissions;
-          for (let j = 0; j < permissions.length; j++) {
-            let idIndex = this.tempRole.permissions.indexOf(permissions[j].id);
-            if (idIndex > -1) {
-              this.tempRole.permissions.splice(idIndex, 1);
-            }
-          }
-        } else {
-          //全部取消选中
-          let menu = this.allmenupermission[_index].permissions;
-          for (let j = 0; j < menu.length; j++) {
-            let idIndex = this.tempRole.permissions.indexOf(menu[j].id);
-            if (idIndex > -1) {
-              this.tempRole.permissions.splice(idIndex, 1);
-            }
+      noPerm(_index) {
+        //全部取消选中
+        let menu = this.allmenupermission[_index].permissions;
+        for (let j = 0; j < menu.length; j++) {
+          let idIndex = this.tempRole.permissions.indexOf(menu[j].id);
+          if (idIndex > -1) {
+            this.tempRole.permissions.splice(idIndex, 1);
           }
         }
       },
@@ -418,14 +360,14 @@
           arr.push(val);
         }
       },
-      checkRequired(_perm, _index) {
+      checkMenuPermissionRequired(_perm, _index) {
         //本方法会在勾选状态改变之后触发
         let permId = _perm.id;
         if (this.tempRole.permissions.indexOf(permId) > -1) {
           //选中事件
           //如果之前未勾选本权限,现在勾选完之后,tempRole里就会包含本id
           //那么就要将必选的权限勾上
-          this.makeReuqiredPermissionChecked(_index);
+          this.makeReuqiredMenuPermissionChecked(_index);
         } else {
           //取消选中事件
           if (_perm.requiredPerm === 1) {
@@ -435,7 +377,7 @@
           }
         }
       },
-      makeReuqiredPermissionChecked(_index) {
+      makeReuqiredMenuPermissionChecked(_index) {
         //将本菜单必选的权限勾上
         let menu = this.allmenupermission[_index].permissions;
         for (let j = 0; j < menu.length; j++) {

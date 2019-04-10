@@ -1,12 +1,8 @@
 package com.heeexy.example.service;
 
 import com.github.pagehelper.PageHelper;
-import com.heeexy.example.mapper.FondMapper;
 import com.heeexy.example.mapper.FondPermissionMapper;
-import com.heeexy.example.model.BaseEntity;
-import com.heeexy.example.model.Fond;
 import com.heeexy.example.model.FondPermission;
-import com.heeexy.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -39,13 +35,41 @@ public class FondPermissionService {
 
     public void updateFondDataRole(List<FondPermission> fondPermissionList) {
         for (FondPermission fondPermission : fondPermissionList) {
-            if (null != fondPermissionMapper.selectByPrimaryKey(fondPermission.getFondId())) {
-                fondPermissionMapper.updateByPrimaryKey(fondPermission);
+            if (this.selectFondsByRole(fondPermission).size() > 0) {
+                if (fondPermission.getDeleteStatus().equals("0")) {
+                    Example example = new Example(FondPermission.class);
+                    Example.Criteria criteria = example.createCriteria();
+                    criteria.andEqualTo("roleId", fondPermission.getRoleId());
+                    criteria.andEqualTo("permissionId", fondPermission.getPermissionId());
+                    criteria.andEqualTo("fondId", fondPermission.getFondId());
+                    fondPermission.setUpdateTime(new java.sql.Timestamp(System.currentTimeMillis()));
+                    fondPermissionMapper.updateByExampleSelective(fondPermission, example);
+                }
             } else {
-                fondPermissionMapper.insert(fondPermission);
+                //先插入所有权限条目，在更新
+                this.insertAllPermissinWithNoPermission(fondPermissionList);
+                this.updateFondDataRole(fondPermissionList);
             }
         }
     }
+
+    private List<FondPermission> insertAllPermissinWithNoPermission(List<FondPermission> fondPermissionList) {
+        for (FondPermission fondPermission : fondPermissionList) {
+            //先插入所有权限条目，在更新
+            FondPermission fondPermissionTemp = new FondPermission();
+            fondPermissionTemp.setFondId(fondPermission.getFondId());
+            fondPermissionTemp.setRoleId(fondPermission.getRoleId());
+            fondPermissionTemp.setPermissionId(fondPermission.getPermissionId());
+            fondPermissionTemp.setPermissionName(fondPermission.getPermissionName());
+            fondPermissionTemp.setDeleteStatus("1");
+            fondPermissionTemp.setCreateTime(new java.sql.Timestamp(System.currentTimeMillis()));
+            fondPermissionTemp.setUpdateTime(new java.sql.Timestamp(System.currentTimeMillis()));
+            fondPermissionMapper.insert(fondPermissionTemp);
+        }
+        return fondPermissionList;
+    }
+
+    ;
 
     public List<FondPermission> selectFondsByRole(FondPermission fondPermission) {
         Example example = new Example(FondPermission.class);
