@@ -153,7 +153,6 @@
         }
 
         let postData = [];
-        debugger;
         for (let m = 0; m < this.alldatapermission.length; m++) {
           let dataMenuPemission = this.alldatapermission[m].permissions;
           for (let n = 0; n < dataMenuPemission.length; n++) {
@@ -310,7 +309,36 @@
 
       //删除某个角色对某个全宗的所有权限
       removeAllFondPermission(_index){
-
+        this.fondRole.fondItemsPermissionList = [];
+        //查询列表
+        this.listLoading = true;
+        let postData = [];
+        for (let m = 0; m < this.alldatapermission.length; m++) {
+          let dataMenuPemission = this.alldatapermission[m].permissions;
+          for (let n = 0; n < dataMenuPemission.length; n++) {
+            let tempFondPermission = JSON.parse(JSON.stringify(this.fondPermission));
+            if (dataMenuPemission[n].id != null && dataMenuPemission[n].id !== '') {
+              tempFondPermission.permissionId = dataMenuPemission[n].id;
+              tempFondPermission.permissionName = dataMenuPemission[n].permissionName;
+              tempFondPermission.deleteStatus = 1;
+            }
+            postData.push(tempFondPermission);
+          }
+        }
+        if (this.fondPermission.fondId !== null && this.fondPermission.fondId !== '') {
+          this.api({
+            url: "/fond/removeAllFondPermission",
+            method: "post",
+            data: postData
+          }).then(data => {
+            this.listLoading = false;
+            this.$confirm('移除所有权限成功', '提示', {
+              confirmButtonText: '确定',
+              showCancelButton: false,
+              type: 'warning'
+            });
+          })
+        }
       }
     }
   }

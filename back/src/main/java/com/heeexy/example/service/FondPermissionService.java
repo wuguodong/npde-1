@@ -53,6 +53,21 @@ public class FondPermissionService {
         }
     }
 
+    public void removeAllFondDataRole(List<FondPermission> fondPermissionList) {
+        for (FondPermission fondPermission : fondPermissionList) {
+            if (this.selectFondsByRole(fondPermission).size() > 0) {
+                Example example = new Example(FondPermission.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("roleId", fondPermission.getRoleId());
+                criteria.andEqualTo("permissionId", fondPermission.getPermissionId());
+                criteria.andEqualTo("fondId", fondPermission.getFondId());
+                fondPermission.setUpdateTime(new java.sql.Timestamp(System.currentTimeMillis()));
+                fondPermission.setDeleteStatus("1");
+                fondPermissionMapper.updateByExampleSelective(fondPermission, example);
+            }
+        }
+    }
+
     private List<FondPermission> insertAllPermissinWithNoPermission(List<FondPermission> fondPermissionList) {
         for (FondPermission fondPermission : fondPermissionList) {
             //先插入所有权限条目，在更新

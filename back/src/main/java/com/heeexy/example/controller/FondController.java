@@ -93,6 +93,17 @@ public class FondController {
         return CommonUtil.successJson(fondPermissionList);
     }
 
+
+    /**
+     * 修改某个角色对某个具体全宗的操作权限
+     */
+    @RequiresPermissions("role:update")
+    @PostMapping("/removeAllFondPermission")
+    public JSONObject removeAllFondDataRole(@RequestBody List<FondPermission> fondPermissionList) {
+        fondPermissionService.removeAllFondDataRole(fondPermissionList);
+        return CommonUtil.successJson(fondPermissionList);
+    }
+
     /**
      * 删除全宗
      */
