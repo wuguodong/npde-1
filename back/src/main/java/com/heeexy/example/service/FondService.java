@@ -35,11 +35,11 @@ public class FondService {
     }
 
     public void save(Fond fond) {
-        if (fond.getEntityStatus() == BaseEntity.ADD) {
+        if (fond.getEntityStatus().equals(BaseEntity.ADD)) {
             fondMapper.insert(fond);
-        } else if (fond.getEntityStatus() == BaseEntity.UPDATE) {
+        } else if (fond.getEntityStatus().equals(BaseEntity.UPDATE)) {
             fondMapper.updateByPrimaryKey(fond);
-        } else if (fond.getEntityStatus() == BaseEntity.DELETE) {
+        } else if (fond.getEntityStatus().equals(BaseEntity.DELETE)) {
             fondMapper.deleteByPrimaryKey(fond.getId());
         }
     }

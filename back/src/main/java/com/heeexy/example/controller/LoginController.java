@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.service.LoginService;
 import com.heeexy.example.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: hxy
@@ -29,6 +26,13 @@ public class LoginController {
 		CommonUtil.hasAllRequired(requestJson, "username,password");
 		return loginService.authLogin(requestJson);
 	}
+
+	@GetMapping("/auth2")
+	public JSONObject authLogin2() {
+
+		return CommonUtil.successJson("3");
+	}
+
 
 	/**
 	 * 查询当前登录用户的信息

@@ -1,10 +1,11 @@
-#server:
-#  port: 8703
+server:
+  port: 8705
 spring:
   datasource:
       url: jdbc:mysql://localhost:3306/npde?serverTimezone=UTC&characterEncoding=utf-8&allowMultiQueries=true
+#      url: jdbc:mysql://39.98.236.58:3306/npde?serverTimezone=UTC&characterEncoding=utf-8&allowMultiQueries=true
       username: root
-      password: root
+      password: 6y7u8i9o0p@2580abc
 mybatis:
    type-aliases-package: tk.mybatis.springboot.model
    mapperLocations: classpath:/mapper/*.xml

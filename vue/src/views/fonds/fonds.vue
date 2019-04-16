@@ -164,6 +164,7 @@
         this.dialogFormVisible = true;
       },
       createFond() {
+        this.tempFond.entityStatus = "add";
         //保存新全宗
         this.api({
           url: "/fond/addFond",

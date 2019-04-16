@@ -13,6 +13,7 @@ router.beforeEach((to, from, next) => {
       next({path: '/'})
       NProgress.done() // 结束Progress
     } else if (!store.getters.role) {
+      debugger;
       store.dispatch('GetInfo').then(() => {
         next({...to})
       })

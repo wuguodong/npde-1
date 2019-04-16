@@ -64,8 +64,8 @@ public class LoginService {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
         User userInfo = (User) session.getAttribute(Constants.SESSION_USER_INFO);
-        String username = userInfo.getUsername();
         JSONObject info = new JSONObject();
+        String username = userInfo.getUsername();
         JSONObject userPermission = permissionService.getUserPermission(username);
         session.setAttribute(Constants.SESSION_USER_PERMISSION, userPermission);
         info.put("userPermission", userPermission);
