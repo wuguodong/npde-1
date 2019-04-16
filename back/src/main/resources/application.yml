@@ -14,7 +14,7 @@ mybatis:
       cache-enabled: false
    mapper:
        mappers:
-           - com.heeexy.example.util.MyMapper
+           - com.npde.example.util.MyMapper
        not-empty: false
        identity: MYSQL
 
